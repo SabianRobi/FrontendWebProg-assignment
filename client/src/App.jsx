@@ -25,7 +25,7 @@ function App() {
           <Route path="/answers" element={<Answers />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/survey" element={<Survey />} />
-          {/* Edit to: survey/<hash> */}
+          {/* Edit to: survey/hash */}
         </Route>
       </Routes>
     </BrowserRouter>

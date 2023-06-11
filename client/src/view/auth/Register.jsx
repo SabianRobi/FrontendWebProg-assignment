@@ -1,4 +1,3 @@
-
 export const Register = () => {
   const handleRegister = (e) => {
     e.preventDefault();
@@ -14,8 +13,7 @@ export const Register = () => {
         <div className="mb-6">
           <label
             htmlFor="full_name"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
             Full name
           </label>
           <input
@@ -29,8 +27,7 @@ export const Register = () => {
         <div className="mb-6">
           <label
             htmlFor="email"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
             Email
           </label>
           <input
@@ -44,8 +41,7 @@ export const Register = () => {
         <div className="mb-6">
           <label
             htmlFor="password"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
             Password
           </label>
           <input
@@ -60,8 +56,7 @@ export const Register = () => {
           <button
             type="submit"
             className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            onClick={(e) => handleRegister(e)}
-          >
+            onClick={(e) => handleRegister(e)}>
             Register
           </button>
         </div>

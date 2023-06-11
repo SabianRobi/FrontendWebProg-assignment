@@ -1,5 +1,4 @@
 export const Login = () => {
-
   // const handleLogin = async (e) => {
   //   e.preventDefault();
   //   const email = document.querySelector('#email').value;
@@ -19,8 +18,7 @@ export const Login = () => {
         <div className="mb-6">
           <label
             htmlFor="email"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
             Email
           </label>
           <input
@@ -34,8 +32,7 @@ export const Login = () => {
         <div className="mb-6">
           <label
             htmlFor="password"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
             Password
           </label>
           <input

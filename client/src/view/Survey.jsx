@@ -1,5 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
 
 export function Survey() {
   return (
@@ -11,8 +14,7 @@ export function Survey() {
       <div className="mb-6 mt-2">
         <label
           htmlFor="answer-1"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white sr-only"
-        >
+          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white sr-only">
           Answer:
         </label>
         <input
@@ -27,8 +29,7 @@ export function Survey() {
       <div className="mb-6 mt-2">
         <label
           htmlFor="answer-2"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white sr-only"
-        >
+          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white sr-only">
           Answer:
         </label>
         <input
@@ -43,8 +44,7 @@ export function Survey() {
       <div className="mb-6 mt-2">
         <label
           htmlFor="answer-3"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white sr-only"
-        >
+          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white sr-only">
           Answer:
         </label>
         <input
@@ -61,8 +61,7 @@ export function Survey() {
           <li>
             <a
               href="#"
-              className="px-3 py-2 ml-0 leading-tight border rounded-l-lg bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white"
-            >
+              className="px-3 py-2 ml-0 leading-tight border rounded-l-lg bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white">
               <span className="sr-only">Previous</span>
               <FontAwesomeIcon
                 icon={faChevronLeft}
@@ -73,48 +72,42 @@ export function Survey() {
           <li>
             <a
               href="#"
-              className=" px-3 py-2 leading-tight border bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white"
-            >
+              className=" px-3 py-2 leading-tight border bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white">
               1
             </a>
           </li>
           <li>
             <a
               href="#"
-              className="px-3 py-2 leading-tight border bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white"
-            >
+              className="px-3 py-2 leading-tight border bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white">
               2
             </a>
           </li>
           <li>
             <a
               href="#"
-              className="px-3 py-2 border dark:border-gray-700 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-500"
-            >
+              className="px-3 py-2 border dark:border-gray-700 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-500">
               3
             </a>
           </li>
           <li>
             <a
               href="#"
-              className="px-3 py-2 leading-tight border bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white"
-            >
+              className="px-3 py-2 leading-tight border bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white">
               4
             </a>
           </li>
           <li>
             <a
               href="#"
-              className="px-3 py-2 leading-tight border bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white"
-            >
+              className="px-3 py-2 leading-tight border bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white">
               5
             </a>
           </li>
           <li>
             <a
               href="#"
-              className="px-3 py-2 ml-0 leading-tight border rounded-r-lg bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white"
-            >
+              className="px-3 py-2 ml-0 leading-tight border rounded-r-lg bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white">
               <span className="sr-only">Next</span>
               <FontAwesomeIcon
                 icon={faChevronRight}
