@@ -27,7 +27,7 @@ export function Profile() {
           </tr>
           <tr>
             <td className="text-left">Number of surveys</td>
-            <td>{isLoading ? "Loading" : surveys.total}</td>
+            <td>{isLoading ? "Loading" : surveys.length}</td>
           </tr>
         </tbody>
       </table>

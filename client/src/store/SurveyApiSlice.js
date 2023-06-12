@@ -4,6 +4,7 @@ const BASE_URL = "http://localhost:3030/";
 
 export const SurveyApiSlice = createApi({
   reducerPath: "surveyApi",
+  keepUnusedDataFor: 1,
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
     prepareHeaders: (headers, { getState }) => {
@@ -28,6 +29,9 @@ export const SurveyApiSlice = createApi({
     // Get surveys created by user
     getUserSurveys: builder.query({
       query: (userId) => `surveys?userId=${userId}`,
+      transformResponse: (data) => {
+        return data.data;
+      },
     }),
 
     // Register
@@ -47,12 +51,22 @@ export const SurveyApiSlice = createApi({
         body: body,
       }),
     }),
+
+    // Delete survey
+    deleteSurvey: builder.mutation({
+      query: (surveyId) => ({
+        url: `surveys/${surveyId}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
 export const {
   useLoginMutation,
   useGetUserSurveysQuery,
+  useLazyGetUserSurveysQuery,
   useRegisterMutation,
   useCreateSurveyMutation,
+  useDeleteSurveyMutation,
 } = SurveyApiSlice;
