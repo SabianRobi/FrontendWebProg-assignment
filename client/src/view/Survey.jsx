@@ -8,7 +8,7 @@ import { Navigate, useParams } from "react-router-dom";
 export function Survey() {
   const { hash } = useParams();
 
-  if(hash === undefined) {
+  if (hash === undefined) {
     return <Navigate to="/" replace />;
   }
 

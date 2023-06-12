@@ -95,6 +95,9 @@ export function NewSurvey() {
         )}
 
         {/* Textarea */}
+        <label htmlFor="newSurvey" className="sr-only">
+          Survey code
+        </label>
         <textarea
           id="newSurvey"
           name="newSurvey"
@@ -108,14 +111,11 @@ export function NewSurvey() {
         <div className="mt-6 flex items-center justify-end gap-x-6">
           <button
             type="submit"
-            className="rounded-md bg-green-800 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
-            // onClick={(e) => handleCreate(e)}
-          >
+            className="rounded-md bg-green-800 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">
             Create
           </button>
         </div>
       </form>
-      {/* Label */}
     </div>
   );
 }
