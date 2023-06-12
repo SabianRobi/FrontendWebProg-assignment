@@ -3,8 +3,15 @@ import {
   faChevronLeft,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
+import { Navigate, useParams } from "react-router-dom";
 
 export function Survey() {
+  const { hash } = useParams();
+
+  if(hash === undefined) {
+    return <Navigate to="/" replace />;
+  }
+
   return (
     <>
       <h1>MyFavSurvey</h1>

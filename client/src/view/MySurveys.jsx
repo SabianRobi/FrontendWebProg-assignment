@@ -12,8 +12,10 @@ import {
 } from "../store/SurveyApiSlice";
 import { useSelector } from "react-redux";
 import { selectUser } from "../store/SurveySlice";
+import { useState } from "react";
 
 export function MySurveys() {
+  const [message, setMessage] = useState({ success: true, message: "" });
   const [doRefreshSurveys] = useLazyGetUserSurveysQuery();
   const [doDeleteSurvey] = useDeleteSurveyMutation();
   const user = useSelector(selectUser);
@@ -24,9 +26,35 @@ export function MySurveys() {
     surveys = await doRefreshSurveys(user.id);
   };
 
+  const handleCopyToClipboard = (hash) => {
+    navigator.clipboard.writeText(location.origin + "/survey/" + hash).then(
+      () => {
+        console.log("Successfully copied to clipboard");
+        setMessage({
+          success: true,
+          message: "Successfully copied to clipboard!",
+        });
+      },
+      () => {
+        console.error("Failed to copy to clipboard!");
+        setMessage({ success: false, message: "Failed to copy to clipboard!" });
+      }
+    );
+    setTimeout(() => {
+      setMessage({ success: true, message: "" });
+    }, 1500);
+  };
+
   return (
     <div>
       <h1>My surveys</h1>
+      {message.message === "" ? (
+        ""
+      ) : message.success ? (
+        <p className="text-end text-green-600">{message.message}</p>
+      ) : (
+        <p className="text-end text-red-600">{message.message}</p>
+      )}
       {isLoading ? (
         <p className="text-center">Surveys loading...</p>
       ) : (
@@ -39,7 +67,7 @@ export function MySurveys() {
             </tr>
           </thead>
           <tbody>
-            {surveys.map((survey) => {
+            {surveys.data.map((survey) => {
               return (
                 <tr key={survey.id}>
                   <td>{survey.name}</td>
@@ -59,6 +87,7 @@ export function MySurveys() {
                       icon={faLink}
                       style={{ color: "#2ab5d1" }}
                       className="p-1 m-1 hover:cursor-pointer"
+                      onClick={() => handleCopyToClipboard(survey.hash)}
                     />
                     <FontAwesomeIcon
                       icon={faPencil}

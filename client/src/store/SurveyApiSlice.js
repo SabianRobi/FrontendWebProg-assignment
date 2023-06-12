@@ -30,7 +30,7 @@ export const SurveyApiSlice = createApi({
     getUserSurveys: builder.query({
       query: (userId) => `surveys?userId=${userId}`,
       transformResponse: (data) => {
-        return data.data;
+        return data;
       },
     }),
 

@@ -190,7 +190,7 @@ Az egész projektet tömörítsd be, kliensestül, szerverestül, és azt tölts
 [X] Kérdőíveim: megjelennek a kérdőívek az elérhető funkciókkal (2pt)
 [ ] Kérdőíveim: módosítás helyes működése (2pt)
 [X] Kérdőíveim: törlés helyes működése (2pt)
-[ ] Kérdőíveim: hivatkozás helyes működése (1pt)
+[X] Kérdőíveim: hivatkozás helyes működése (1pt)
 [ ] Kérdőív: a kérdőív kérdései megjelennek (3pt)
 [ ] Kérdőív: a kérdések lapozható formában jelennek meg a lapok megnevezéseivel, a lapok közötti navigáció megfelelő (2pt)
 [ ] Kérdőív: csak kitöltött oldal esetén lehet továbblapozni (1pt)
@@ -210,3 +210,5 @@ Az egész projektet tömörítsd be, kliensestül, szerverestül, és azt tölts
 # My requirements
 [ ] Redirect to '/' after logout
 [X] Protect routes
+[ ] MySurveys is only showing 10 surveys
+[ ] Min 24 points (curr: 14) 
