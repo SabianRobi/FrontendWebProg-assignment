@@ -180,12 +180,12 @@ Az egész projektet tömörítsd be, kliensestül, szerverestül, és azt tölts
 Összesen 30 pont érhető el.
 
 [X] React használata (kötelező)
-[ ] Redux használata (kötelező)
-[ ] Navigáció megfelelően változik a be- és kijelentkezésnek megfelelően (1pt)
+[X] Redux használata (kötelező)
+[X] Navigáció megfelelően változik a be- és kijelentkezésnek megfelelően (1pt)
 [X] Főoldal megjelenik (1pt)
-[ ] Regisztráció működik (1pt)
-[ ] Bejelentkezés működik (1pt)
-[ ] Új kérdőív, Kérdőíveim: csak bejelentkezve érhetőek el (1pt)
+[X] Regisztráció működik (1pt)
+[X] Bejelentkezés működik (1pt)
+[X] Új kérdőív, Kérdőíveim: csak bejelentkezve érhetőek el (1pt)
 [ ] Új kérdőív: új kérdőív mentésének helyes működése (2pt)
 [ ] Kérdőíveim: megjelennek a kérdőívek az elérhető funkciókkal (2pt)
 [ ] Kérdőíveim: módosítás helyes működése (2pt)
@@ -197,11 +197,16 @@ Az egész projektet tömörítsd be, kliensestül, szerverestül, és azt tölts
 [ ] Kérdőív: lapozón vizuálisan látszik, hogy mely lapnál tartunk (1pt)
 [ ] Kérdőív: beküldés helyes működése (2pt)
 [ ] Válaszok: a kiválasztott kérdőívre adott válaszok megjelennek (2pt)
-[ ] Profil: csak bejelentkezve érhető el, megfelelő tartalommal (2pt)
-[ ] Profil: Kijelentkezés gomb működik (1pt)
+[X] Profil: csak bejelentkezve érhető el, megfelelő tartalommal (2pt)
+[X] Profil: Kijelentkezés gomb működik (1pt)
 [X] Igényes megjelenés (2pt)
 [ ] Pluszok: a kérdőíveim lista lapozható (pl. 5-ösével) (+2pt)
 [ ] Pluszok: a válaszok lista lapozható (pl. 10-esével) (+2pt)
 [ ] Pluszok: a kérdőív linkje egy gombra kattintva a vágólapra másolható (+1pt)
-[ ] 1 hét késés (-3pt)
+[X] 1 hét késés (-3pt)
 [ ] 2 hét késés (-6pt)
+
+
+# My requirements
+[ ] Redirect to '/' after logout
+[X] Protect routes

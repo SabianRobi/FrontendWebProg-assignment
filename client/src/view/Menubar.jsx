@@ -1,8 +1,15 @@
 import { Link } from "react-router-dom";
-
-const isLoggedIn = true;
+import { useDispatch, useSelector } from "react-redux";
+import { logout, selectIsLoggedIn } from "../store/SurveySlice";
 
 export function Menubar() {
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+
+  const handleLogut = () => {
+    dispatch(logout());
+  };
+
   return (
     <>
       <nav className="flex flex-row justify-center">
@@ -33,11 +40,12 @@ export function Menubar() {
               to="/profile">
               Profile
             </Link>
-            <Link
-              className="bg-red-800 hover:bg-red-600 hover:text-white rounded p-2 m-2"
-              to="/logout">
+            <div
+              className="bg-red-800 hover:bg-red-600 hover:text-white rounded p-2 m-2 hover:cursor-pointer"
+              to="/logout"
+              onClick={handleLogut}>
               Logout
-            </Link>
+            </div>
           </>
         ) : (
           <>

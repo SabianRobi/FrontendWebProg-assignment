@@ -1,6 +1,15 @@
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUser, selectSurveyCount, logout } from "../store/SurveySlice";
 
 export function Profile() {
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+  const surveyCount = useSelector(selectSurveyCount);
+
+  const handleLogut = () => {
+    dispatch(logout());
+  };
+
   return (
     <div>
       <h1>Profile</h1>
@@ -9,25 +18,25 @@ export function Profile() {
         <tbody>
           <tr>
             <td className="text-left">Full name</td>
-            <td>MyFavouriteUser</td>
+            <td>{user.fullname}</td>
           </tr>
           <tr>
             <td className="text-left">Email</td>
-            <td>favUser@surveys.com</td>
+            <td>{user.email}</td>
           </tr>
           <tr>
             <td className="text-left">Number of surveys</td>
-            <td>420</td>
+            <td>{surveyCount}</td>
           </tr>
         </tbody>
       </table>
 
       <div className="flex flex-row justify-center">
-        <Link
-          className="bg-red-800 hover:bg-red-600 hover:text-white rounded p-2 m-2"
-          to="/logout">
+        <p
+          className="bg-red-800 hover:bg-red-600 hover:text-white hover:cursor-pointer rounded p-2 m-2"
+          onClick={handleLogut}>
           Logout
-        </Link>
+        </p>
       </div>
     </div>
   );
