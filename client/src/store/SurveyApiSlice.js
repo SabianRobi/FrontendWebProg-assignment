@@ -38,11 +38,21 @@ export const SurveyApiSlice = createApi({
         body: body,
       }),
     }),
+
+    // Create survey
+    createSurvey: builder.mutation({
+      query: (body) => ({
+        url: `surveys`,
+        method: "POST",
+        body: body,
+      }),
+    }),
   }),
 });
 
 export const {
   useLoginMutation,
-  useLazyGetUserSurveysQuery,
+  useGetUserSurveysQuery,
   useRegisterMutation,
+  useCreateSurveyMutation,
 } = SurveyApiSlice;

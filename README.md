@@ -186,7 +186,7 @@ Az egész projektet tömörítsd be, kliensestül, szerverestül, és azt tölts
 [X] Regisztráció működik (1pt)
 [X] Bejelentkezés működik (1pt)
 [X] Új kérdőív, Kérdőíveim: csak bejelentkezve érhetőek el (1pt)
-[ ] Új kérdőív: új kérdőív mentésének helyes működése (2pt)
+[X] Új kérdőív: új kérdőív mentésének helyes működése (2pt)
 [ ] Kérdőíveim: megjelennek a kérdőívek az elérhető funkciókkal (2pt)
 [ ] Kérdőíveim: módosítás helyes működése (2pt)
 [ ] Kérdőíveim: törlés helyes működése (2pt)

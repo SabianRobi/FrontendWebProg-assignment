@@ -1,10 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
-import { selectUser, selectSurveyCount, logout } from "../store/SurveySlice";
+import { selectUser, logout } from "../store/SurveySlice";
+import { useGetUserSurveysQuery } from "../store/SurveyApiSlice";
 
 export function Profile() {
-  const dispatch = useDispatch();
   const user = useSelector(selectUser);
-  const surveyCount = useSelector(selectSurveyCount);
+  const { data: surveys, isLoading } = useGetUserSurveysQuery(user.id);
+  const dispatch = useDispatch();
 
   const handleLogut = () => {
     dispatch(logout());
@@ -26,7 +27,7 @@ export function Profile() {
           </tr>
           <tr>
             <td className="text-left">Number of surveys</td>
-            <td>{surveyCount}</td>
+            <td>{isLoading ? "Loading" : surveys.total}</td>
           </tr>
         </tbody>
       </table>

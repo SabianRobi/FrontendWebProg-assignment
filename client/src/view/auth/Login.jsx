@@ -1,15 +1,11 @@
 import { useDispatch } from "react-redux";
-import {
-  useLoginMutation,
-  useLazyGetUserSurveysQuery,
-} from "../../store/SurveyApiSlice";
-import { setCredentials, setSurveys } from "../../store/SurveySlice";
+import { useLoginMutation } from "../../store/SurveyApiSlice";
+import { setCredentials } from "../../store/SurveySlice";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 export const Login = () => {
   const [doLogin] = useLoginMutation();
-  const [getUserSurveys] = useLazyGetUserSurveysQuery();
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const dispatch = useDispatch();
@@ -40,11 +36,6 @@ export const Login = () => {
       const data = response["data"];
       const userInfo = { accessToken: data.accessToken, user: data.user };
       dispatch(setCredentials(userInfo));
-
-      let surveys = await getUserSurveys(data.user.id);
-      if (surveys.status === "fulfilled") {
-        dispatch(setSurveys(surveys.data.data));
-      }
     }
   };
 

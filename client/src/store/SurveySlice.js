@@ -7,7 +7,6 @@ const initialState = {
   // },
   accessToken: null,
   user: null,
-  surveys: null,
   // [
   //   {
   //     id: 10,
@@ -28,9 +27,6 @@ const surveySlice = createSlice({
       state.user = payload.user;
       state.accessToken = payload.accessToken;
     },
-    setSurveys: (state, { payload }) => {
-      state.surveys = payload;
-    },
     logout: (state) => {
       state.accessToken = null;
       state.user = null;
@@ -45,7 +41,6 @@ export const { setCredentials, setSurveys, logout } = surveySlice.actions;
 
 // Selectors
 export const selectUser = (state) => state.survey.user;
-export const selectSurveyCount = (state) => state.survey.surveys.length;
 export const selectAccessToken = (state) => state;
 export const selectIsLoggedIn = (state) => {
   // console.log(state);
