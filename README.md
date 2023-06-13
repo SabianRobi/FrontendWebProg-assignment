@@ -22,7 +22,7 @@ A fegyelmi vétség legsúlyosabb következménye a hallgató elbocsátása az e
 
 ## A feladat
 
-A beadandóban olyan webes alkalmazást kell írnod, amelyben egy felhasználónak lehetősége van többlépéses kérdőíveket összeállítania. Az elkészített kérdőíveket egy táblázatban át lehet tekinteni, ahol lehetőség van ezek módosítására, törlésére, valamint azok megosztására egy linken keresztül. Ezen a linken keresztül aztán a kérdőívet ki lehet tölteni. A kérdőívekhez tartozó válaszokat ezt követően egy külön felületen meg lehet tekinteni. 
+A beadandóban olyan webes alkalmazást kell írnod, amelyben egy felhasználónak lehetősége van többlépéses kérdőíveket összeállítania. Az elkészített kérdőíveket egy táblázatban át lehet tekinteni, ahol lehetőség van ezek módosítására, törlésére, valamint azok megosztására egy linken keresztül. Ezen a linken keresztül aztán a kérdőívet ki lehet tölteni. A kérdőívekhez tartozó válaszokat ezt követően egy külön felületen meg lehet tekinteni.
 
 A feladatot _React_ és _Redux_ kombinációjával kell megoldanod, Redux esetében ajánlott a _redux toolkit_ és akár az _RTK Query_ használata. Mivel az alkalmazás több oldalból áll, a _react-router_ használata javasolt.
 A feladatban adott a szerveroldali REST API, leírását lentebb olvashatjátok, ehhez kell igazodnia a kliensnek.
@@ -77,12 +77,13 @@ A kérdőív egy "kód" formájában készül, aminek szabályai a következőek
 - a lapok első sora tartalmazza annak a megnevezését, majd alatta külön sorokban az egyes kérdések
 
 A bevitt adatot ellenőrizni kell. A formátum ellenőrzésekor elég a következőket figyelni:
+
 - nem üres,
 - van címe,
 - legalább 1 lapja,
 - laponként legalább 1 kérdéssel.
 
-A kérdések minden esetben egyszerű szöveges választ várnak. 
+A kérdések minden esetben egyszerű szöveges választ várnak.
 
 A kérdőív mentésekor a REST API automatikusan a bejelentezettt felhasználóhoz rendeli a kérdőívet, generál neki egy egyedi azonosítót (`hash`), amit majd a hivatkozáshoz lehet használni.
 
@@ -91,7 +92,7 @@ A kérdőív mentésekor a REST API automatikusan a bejelentezettt felhasználó
 ### Kérdőíveim
 
 Csak bejelentkezve érhető el.
-A bejelentkezett felhasználóhoz tartozó kérdőívek jelennek itt meg, minden feladatsornál azok nevei, létrehozási dátumai és a hozzá tartozó funkciógombok. A nevek linkek, amik a  kérdőívhez tartozó linkre (`hash`) mutatnak (ezen keresztül van lehetőség annak kitöltésére). Minden kérdőívnél lehetőség van:
+A bejelentkezett felhasználóhoz tartozó kérdőívek jelennek itt meg, minden feladatsornál azok nevei, létrehozási dátumai és a hozzá tartozó funkciógombok. A nevek linkek, amik a kérdőívhez tartozó linkre (`hash`) mutatnak (ezen keresztül van lehetőség annak kitöltésére). Minden kérdőívnél lehetőség van:
 
 - annak törlésére,
 - módosítására (az "Új kérdőív" felületen jelenik meg a jelenlegi kérdőív "kódja"),
@@ -159,7 +160,7 @@ A végpontok leírását és kipróbálását úgy tehetitek meg legegyszerűbbe
 - [surveys gyűjtemény](https://api.postman.com/collections/15151253-faa17ed9-b3d4-4e85-b681-52fe8dbfde37?access_key=PMAT-01H0JMK0RGT8BH9CQY6CGF8ZW6)
 - [results gyűjtemény](https://api.postman.com/collections/15151253-b3e753b2-42d0-4946-b312-999bb75002d4?access_key=PMAT-01H0JMKX3741T69NKZXD9ABX6Z)
 
-Innentől kipróbálhatók a végpontok. A felküldendő tartalmak a Body részben vannak előkészítve. 
+Innentől kipróbálhatók a végpontok. A felküldendő tartalmak a Body részben vannak előkészítve.
 
 A `surveys` és `results` végpontok eléréséhez hitelesítés szükséges. Ehhez egy `Authorization` HTTP fejlécet kell küldeni `Bearer token` tartalommal. A tokent a login végpont adja vissza. Az authentikációhoz tartozó JWT token a `surveys` és `results` gyűjtemény `Authorization` fülén van elmentve, ott igény szerint cserélhető. Az itt megadott token is használható próbaképpen, de az alkalmazásban dinamikusan kell generáltatni.
 
@@ -188,7 +189,7 @@ Az egész projektet tömörítsd be, kliensestül, szerverestül, és azt tölts
 [X] Új kérdőív, Kérdőíveim: csak bejelentkezve érhetőek el (1pt)
 [X] Új kérdőív: új kérdőív mentésének helyes működése (2pt)
 [X] Kérdőíveim: megjelennek a kérdőívek az elérhető funkciókkal (2pt)
-[ ] Kérdőíveim: módosítás helyes működése (2pt)
+[X] Kérdőíveim: módosítás helyes működése (2pt)
 [X] Kérdőíveim: törlés helyes működése (2pt)
 [X] Kérdőíveim: hivatkozás helyes működése (1pt)
 [ ] Kérdőív: a kérdőív kérdései megjelennek (3pt)
@@ -206,9 +207,19 @@ Az egész projektet tömörítsd be, kliensestül, szerverestül, és azt tölts
 [X] 1 hét késés (-3pt)
 [ ] 2 hét késés (-6pt)
 
+# Jellegzetesség
+
+- Kérdőív oldalai/kérdései szövegesített JSON formátumban mentődnek el adatbázisban
+
+# Ismert hibák
+
+- Oldal újratöltésekor elveszik a bejelentkezés (nincs cookieban/localstorage-ban tárolva adat)
+- Kérdőív létrehozása/módosístása után a textbox-ban marad a kérdőív "kódja"
+- Ha egy kérdőívet el kezdünk szerkeszteni, az új kérdőív létrehozása lapon mindaddig a módosítandó kérdőív jelenik meg, míg le nem mégsézzük.
 
 # My requirements
+
 [ ] Redirect to '/' after logout
 [X] Protect routes
 [ ] MySurveys is only showing 10 surveys
-[ ] Min 24 points (curr: 14) 
+[ ] Min 24 points (curr: 16)

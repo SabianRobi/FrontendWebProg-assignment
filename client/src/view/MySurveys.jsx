@@ -13,13 +13,16 @@ import {
 import { useSelector } from "react-redux";
 import { selectUser } from "../store/SurveySlice";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export function MySurveys() {
+// eslint-disable-next-line react/prop-types
+export function MySurveys({ setEditedSurvey }) {
   const [message, setMessage] = useState({ success: true, message: "" });
   const [doRefreshSurveys] = useLazyGetUserSurveysQuery();
   const [doDeleteSurvey] = useDeleteSurveyMutation();
   const user = useSelector(selectUser);
   let { data: surveys, isLoading } = useGetUserSurveysQuery(user.id);
+  const navigate = useNavigate();
 
   const handleDelete = async (id) => {
     await doDeleteSurvey(id);
@@ -43,6 +46,13 @@ export function MySurveys() {
     setTimeout(() => {
       setMessage({ success: true, message: "" });
     }, 1500);
+  };
+
+  const handleEdit = (survey) => {
+    setEditedSurvey(survey);
+
+    console.log("Redirecting...");
+    navigate(`/new-survey`, { replace: true });
   };
 
   return (
@@ -93,6 +103,7 @@ export function MySurveys() {
                       icon={faPencil}
                       style={{ color: "#f5aa3b" }}
                       className="p-1 m-1 hover:cursor-pointer"
+                      onClick={() => handleEdit(survey)}
                     />
                     <FontAwesomeIcon
                       icon={faTrash}

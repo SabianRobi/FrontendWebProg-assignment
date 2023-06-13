@@ -10,7 +10,7 @@ export const SurveyApiSlice = createApi({
     prepareHeaders: (headers, { getState }) => {
       const token = getState().survey.accessToken;
       if (token) {
-        headers.set("authorization", `Bearer ${token}`);
+        headers.set("Authorization", `Bearer ${token}`);
       }
       return headers;
     },
@@ -29,9 +29,6 @@ export const SurveyApiSlice = createApi({
     // Get surveys created by user
     getUserSurveys: builder.query({
       query: (userId) => `surveys?userId=${userId}`,
-      transformResponse: (data) => {
-        return data;
-      },
     }),
 
     // Register
@@ -52,6 +49,15 @@ export const SurveyApiSlice = createApi({
       }),
     }),
 
+    // Modify survey
+    modifySurvey: builder.mutation({
+      query: ({survey, id}) => ({
+        url: `surveys/${id}`,
+        method: "PATCH",
+        body: survey,
+      }),
+    }),
+
     // Delete survey
     deleteSurvey: builder.mutation({
       query: (surveyId) => ({
@@ -69,4 +75,6 @@ export const {
   useRegisterMutation,
   useCreateSurveyMutation,
   useDeleteSurveyMutation,
+  useModifySurveyMutation,
+  useLazyGetSurveyQuery,
 } = SurveyApiSlice;
