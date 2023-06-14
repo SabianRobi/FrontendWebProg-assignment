@@ -223,3 +223,4 @@ Az egész projektet tömörítsd be, kliensestül, szerverestül, és azt tölts
 [X] Protect routes
 [ ] MySurveys is only showing 10 surveys
 [ ] Min 24 points (curr: 22)
+[ ] Survey component gives a warning

@@ -3,6 +3,11 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   accessToken: null,
   user: null,
+  survey: {
+    isFilling: false,
+    currentPage: null,
+    data: null,
+  },
   // user: {
   //   fullname: "Teste elek",
   //   email: 'a.b@c.d'
@@ -19,15 +24,37 @@ const surveySlice = createSlice({
       state.accessToken = payload.accessToken;
     },
     logout: (state) => {
-      state.accessToken = null;
       state.user = null;
-      state.surveys = null;
+      state.accessToken = null;
+    },
+
+    // Survey filling
+    setSurvey: (state, { payload }) => {
+      state.survey.isFilling = true;
+      state.survey.currentPage = 1;
+      state.survey.data = payload;
+    },
+    setPage: (state, { payload: page }) => {
+      state.survey.currentPage = page;
+    },
+    setNextPage: (state) => {
+      state.survey.currentPage = state.survey.currentPage + 1;
+    },
+    setPrevPage: (state) => {
+      state.survey.currentPage--;
     },
   },
 });
 
 // Actions
-export const { setCredentials, setSurveys, logout } = surveySlice.actions;
+export const {
+  setCredentials,
+  logout,
+  setSurvey,
+  setPage,
+  setNextPage,
+  setPrevPage,
+} = surveySlice.actions;
 
 // Selectors
 export const selectUser = (state) => state.survey.user;
@@ -35,5 +62,7 @@ export const selectIsLoggedIn = (state) => {
   const user = state.survey.user;
   return user !== null;
 };
+export const selectSurvey = (state) => state.survey.survey;
+export const selectSurveyPage = (state) => state.survey.survey.currentPage;
 
 export const { reducer: surveyReducer } = surveySlice;
