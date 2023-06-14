@@ -7,7 +7,7 @@ import { NewSurvey } from "./view/NewSurvey.jsx";
 import { MySurveys } from "./view/MySurveys.jsx";
 import { Answers } from "./view/Answers.jsx";
 import { Profile } from "./view/Profile.jsx";
-import { Survey } from "./view/Survey";
+import { Survey } from "./view/Survey/Survey";
 import Protected from "./view/auth/Protected";
 import { useState } from "react";
 
