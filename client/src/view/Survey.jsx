@@ -4,68 +4,68 @@ import {
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { Navigate, useParams } from "react-router-dom";
+import { useGetSurveyByHashQuery } from "../store/SurveyApiSlice";
 
 export function Survey() {
   const { hash } = useParams();
 
+  let { data: surveyData, isLoading } = useGetSurveyByHashQuery(hash);
   if (hash === undefined) {
     return <Navigate to="/" replace />;
   }
 
-  return (
+  if (!isLoading && surveyData.total === 0) {
+    return <Navigate to="/" replace />;
+  }
+
+  if (!isLoading && surveyData.total > 0) {
+    console.log(JSON.parse(surveyData.data[0].content));
+  }
+
+  return isLoading ? (
+    <h2 className="text-center">Survey loading...</h2>
+  ) : (
     <>
-      <h1>MyFavSurvey</h1>
+      {/* Survey title */}
+      <h1>{surveyData.data[0].name}</h1>
 
-      {/* Questions */}
-      <h3>1. What is my favourite color?</h3>
-      <div className="mb-6 mt-2">
-        <label
-          htmlFor="answer-1"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white sr-only">
-          Answer:
-        </label>
-        <input
-          type="text"
-          id="answer-1"
-          placeholder="Type your answer here"
-          className="text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500"
-        />
-      </div>
+      {/* Pages */}
+      {!isLoading
+        ? JSON.parse(surveyData.data[0].content).map((page, pIndex) => {
+            return (
+              <>
+                {/* Page title */}
+                <h3 key={pIndex}>{page.title}</h3>
 
-      <h3>2. What is my favourite city?</h3>
-      <div className="mb-6 mt-2">
-        <label
-          htmlFor="answer-2"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white sr-only">
-          Answer:
-        </label>
-        <input
-          type="text"
-          id="answer-2"
-          placeholder="Type your answer here"
-          className="text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500"
-        />
-      </div>
-
-      <h3>3. How old am I?</h3>
-      <div className="mb-6 mt-2">
-        <label
-          htmlFor="answer-3"
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white sr-only">
-          Answer:
-        </label>
-        <input
-          type="text"
-          id="answer-3"
-          placeholder="Type your answer here"
-          className="text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500"
-        />
-      </div>
+                {/* Questions */}
+                {page.questions.map((question, qIndex) => {
+                  return (
+                    <div
+                      className="mb-6 mt-2"
+                      key={"question-" + pIndex + "." + qIndex}>
+                      <label
+                        htmlFor={"answer-" + pIndex + "." + qIndex}
+                        className="block mb-2 text-sm text-gray-900 dark:text-white">
+                        {question}
+                      </label>
+                      <input
+                        type="text"
+                        id={"answer-" + pIndex + "." + qIndex}
+                        placeholder="Type your answer here"
+                        className="text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500"
+                      />
+                    </div>
+                  );
+                })}
+              </>
+            );
+          })
+        : ""}
 
       {/* Pagination */}
       <nav className="flex flex-row justify-center">
         <ul className="inline-flex -space-x-px">
-          <li>
+          <li key={"prev"}>
             <a
               href="#"
               className="px-3 py-2 ml-0 leading-tight border rounded-l-lg bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white">
@@ -76,42 +76,20 @@ export function Survey() {
               />
             </a>
           </li>
-          <li>
-            <a
-              href="#"
-              className=" px-3 py-2 leading-tight border bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white">
-              1
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="px-3 py-2 leading-tight border bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white">
-              2
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="px-3 py-2 border dark:border-gray-700 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-500">
-              3
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="px-3 py-2 leading-tight border bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white">
-              4
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="px-3 py-2 leading-tight border bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white">
-              5
-            </a>
-          </li>
-          <li>
+
+          {JSON.parse(surveyData.data[0].content).map((_, pIndex) => {
+            return (
+              <li key={"paginator." + (pIndex + 1)}>
+                <a
+                  href="#"
+                  className=" px-3 py-2 leading-tight border bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white">
+                  {pIndex + 1}
+                </a>
+              </li>
+            );
+          })}
+
+          <li key={"next"}>
             <a
               href="#"
               className="px-3 py-2 ml-0 leading-tight border rounded-r-lg bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white">

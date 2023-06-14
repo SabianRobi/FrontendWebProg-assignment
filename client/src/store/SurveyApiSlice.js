@@ -26,11 +26,6 @@ export const SurveyApiSlice = createApi({
       }),
     }),
 
-    // Get surveys created by user
-    getUserSurveys: builder.query({
-      query: (userId) => `surveys?userId=${userId}`,
-    }),
-
     // Register
     register: builder.mutation({
       query: (body) => ({
@@ -38,6 +33,16 @@ export const SurveyApiSlice = createApi({
         method: "POST",
         body: body,
       }),
+    }),
+
+    // Get surveys created by user
+    getUserSurveys: builder.query({
+      query: (userId) => `surveys?userId=${userId}`,
+    }),
+
+    // Get survey by hash
+    getSurveyByHash: builder.query({
+      query: (hash) => `surveys?hash=${hash}`,
     }),
 
     // Create survey
@@ -51,7 +56,7 @@ export const SurveyApiSlice = createApi({
 
     // Modify survey
     modifySurvey: builder.mutation({
-      query: ({survey, id}) => ({
+      query: ({ survey, id }) => ({
         url: `surveys/${id}`,
         method: "PATCH",
         body: survey,
@@ -77,4 +82,6 @@ export const {
   useDeleteSurveyMutation,
   useModifySurveyMutation,
   useLazyGetSurveyQuery,
+  useLazyGetSurveyByHashQuery,
+  useGetSurveyByHashQuery,
 } = SurveyApiSlice;
