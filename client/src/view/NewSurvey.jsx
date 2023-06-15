@@ -13,7 +13,7 @@ export function NewSurvey({ editedSurvey, setEditedSurvey }) {
   const [doCreateSurvey] = useCreateSurveyMutation();
   const [doModifySurvey] = useModifySurveyMutation();
 
-  const { handleSubmit, register } = useForm();
+  const { handleSubmit, register, reset } = useForm();
   let initialTextBoxText = "";
 
   const handleCreate = async (data) => {
@@ -85,6 +85,13 @@ export function NewSurvey({ editedSurvey, setEditedSurvey }) {
       setSuccessMessage(
         `Successfully ${editedSurvey ? "updated" : "created"} survey!`
       );
+
+      setEditedSurvey(false);
+      reset();
+      setErrorMessage("");
+      setTimeout(() => {
+        setSuccessMessage(false);
+      }, 4000);
     }
   };
 

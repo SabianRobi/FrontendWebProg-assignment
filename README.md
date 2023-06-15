@@ -224,8 +224,6 @@ Az egész projektet tömörítsd be, kliensestül, szerverestül, és azt tölts
 [ ] MySurveys is only showing 10 surveys
 [ ] Min 24 points (curr: 25)
 [ ] Survey component gives a warning
-[ ] New survey / Edit survey buggy without refresh - use controlled input?
-
 
 # NOW:
 
