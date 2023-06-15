@@ -196,7 +196,7 @@ Az egész projektet tömörítsd be, kliensestül, szerverestül, és azt tölts
 [X] Kérdőív: a kérdések lapozható formában jelennek meg a lapok megnevezéseivel, a lapok közötti navigáció megfelelő (2pt)
 [X] Kérdőív: csak kitöltött oldal esetén lehet továbblapozni (1pt)
 [X] Kérdőív: lapozón vizuálisan látszik, hogy mely lapnál tartunk (1pt)
-[ ] Kérdőív: beküldés helyes működése (2pt)
+[X] Kérdőív: beküldés helyes működése (2pt)
 [ ] Válaszok: a kiválasztott kérdőívre adott válaszok megjelennek (2pt)
 [X] Profil: csak bejelentkezve érhető el, megfelelő tartalommal (2pt)
 [X] Profil: Kijelentkezés gomb működik (1pt)
@@ -222,6 +222,11 @@ Az egész projektet tömörítsd be, kliensestül, szerverestül, és azt tölts
 [ ] Redirect to '/' after logout
 [X] Protect routes
 [ ] MySurveys is only showing 10 surveys
-[ ] Min 24 points (curr: 23)
+[ ] Min 24 points (curr: 25)
 [ ] Survey component gives a warning
 [ ] New survey / Edit survey buggy without refresh - use controlled input?
+
+
+# NOW:
+
+Beküldés helyes működése: show send button when all the fields are filled and make it work

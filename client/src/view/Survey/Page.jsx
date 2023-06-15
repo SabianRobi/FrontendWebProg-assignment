@@ -5,7 +5,6 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  selectIsEverythingFilled,
   selectSurvey,
   selectSurveyPage,
   setNextPage,
@@ -14,41 +13,73 @@ import {
 } from "../../store/SurveySlice";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useSaveAnswerMutation } from "../../store/SurveyApiSlice";
 
 /* eslint-disable react/prop-types */
 export const Page = () => {
   const dispatch = useDispatch();
   const survey = useSelector(selectSurvey);
   const page = useSelector(selectSurveyPage);
-  const isEverythingFilled = useSelector(selectIsEverythingFilled);
   const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [doSaveAnswers] = useSaveAnswerMutation();
 
-  const { register, handleSubmit, getValues } = useForm();
-  const onSubmit = (data) => {
-    console.log(data);
+  const { register, handleSubmit, getValues, reset } = useForm();
+
+  const onSubmit = async (data) => {
+    const totalQuestions = survey.data.pages.reduce(
+      (acc, value) => value.questions.length + acc,
+      0
+    );
+
+    let totalAnswers = 0;
+    getValues().answers.map((page) => {
+      page.map((question) => {
+        if (question.trim() !== "") totalAnswers++;
+      });
+    });
+
+    if (totalAnswers !== totalQuestions) {
+      setError("Filling every field is required!");
+      setTimeout(() => {
+        setError(false);
+      }, 2500);
+      return;
+    }
+
+    console.log("Saving answers...");
+    const answerData = Object.values(data)[0];
+    const resp = await doSaveAnswers({
+      surveyId: survey.data.id,
+      content: JSON.stringify(answerData),
+    });
+
+    if (resp["error"]) {
+      setError(resp["error"]["data"]["message"]);
+      console.error("Error:", resp["error"]["data"]["message"]);
+      setTimeout(() => {
+        setError(false);
+      }, 4000);
+    } else {
+      setSuccess("Successfully processed the answers!");
+      console.info("Successfully processed the answers!");
+
+      console.log(resp);
+      reset();
+    }
   };
 
-  // const questionCount = survey.data.pages.reduce(
-  //   (acc, value) => value.questions.length + acc,
-  //   0
-  // );
-
-  const handlePaginate = (fn, page) => {
+  const handlePaginate = (fn, nextPage) => {
     console.log("Paginating");
 
     let valid = true;
-    // let counter = 0;
-    for (const [key, value] of Object.entries(getValues())) {
-      if (value.trim() === "") valid = false;
-      // else counter++;
-    }
+    getValues().answers[page - 1].map((question) => {
+      if (question.trim() === "") valid = false;
+    });
 
     if (valid) {
-      // if (counter == questionCount) {
-      //   console.log("SURVEY READY, sending...");
-      // } else
-      if (page) {
-        dispatch(fn(page));
+      if (nextPage) {
+        dispatch(fn(nextPage));
       } else {
         dispatch(fn());
       }
@@ -69,23 +100,23 @@ export const Page = () => {
       <h3>{survey.data.pages[page - 1].title}</h3>
 
       {error ? <p className="text-red-500 text-end">{error}</p> : ""}
+      {success ? <p className="text-green-600 text-end">{success}</p> : ""}
 
       {/* Questions */}
       {survey.data.pages[page - 1].questions.map((question, qIndex) => {
         return (
-          <div className="mb-6 mt-2" key={"question-" + page + "-" + qIndex}>
+          <div className="mb-6 mt-2" key={"q-" + (page - 1) + "-" + qIndex}>
             <label
-              htmlFor={"answer-" + page + "." + (qIndex + 1)}
+              htmlFor={"answers." + (page - 1) + "." + qIndex}
               className="block mb-2 text-sm text-gray-900 dark:text-white">
               {question}
             </label>
             <input
-              {...register("answer-" + page + "-" + (qIndex + 1), {
+              {...register("answers." + (page - 1) + "." + qIndex, {
                 required: true,
               })}
               type="text"
-              id={"answer-" + page + "-" + (qIndex + 1)}
-              placeholder="Type your answer here"
+              placeholder="Type your answers here"
               className="text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
@@ -152,15 +183,11 @@ export const Page = () => {
             </span>
           </li>
         </ul>
-        {isEverythingFilled ? (
-          <button
-            type="submit"
-            className="bg-green-800 hover:bg-green-600 hover:text-white rounded p-2 m-2">
-            Send
-          </button>
-        ) : (
-          <span></span>
-        )}
+        <button
+          type="submit"
+          className="bg-green-800 hover:bg-green-600 hover:text-white rounded p-2 m-2">
+          Send
+        </button>
       </nav>
     </form>
   );

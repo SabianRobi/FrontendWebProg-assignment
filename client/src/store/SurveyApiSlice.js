@@ -70,6 +70,15 @@ export const SurveyApiSlice = createApi({
         method: "DELETE",
       }),
     }),
+
+    // Save answer
+    saveAnswer: builder.mutation({
+      query: (payload) => ({
+        url: `results`,
+        method: "POST",
+        body: payload,
+      }),
+    }),
   }),
 });
 
@@ -81,7 +90,7 @@ export const {
   useCreateSurveyMutation,
   useDeleteSurveyMutation,
   useModifySurveyMutation,
-  useLazyGetSurveyQuery,
   useLazyGetSurveyByHashQuery,
   useGetSurveyByHashQuery,
+  useSaveAnswerMutation,
 } = SurveyApiSlice;

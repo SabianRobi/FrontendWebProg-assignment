@@ -7,7 +7,6 @@ const initialState = {
     isFilling: false,
     currentPage: null,
     data: null,
-    isEverythingFilled: null,
   },
 };
 
@@ -30,7 +29,6 @@ const surveySlice = createSlice({
       state.survey.isFilling = true;
       state.survey.currentPage = 1;
       state.survey.data = payload;
-      state.survey.isEverythingFilled = false;
     },
     setPage: (state, { payload: page }) => {
       state.survey.currentPage = page;
@@ -62,7 +60,5 @@ export const selectIsLoggedIn = (state) => {
 };
 export const selectSurvey = (state) => state.survey.survey;
 export const selectSurveyPage = (state) => state.survey.survey.currentPage;
-export const selectIsEverythingFilled = (state) =>
-  state.survey.survey.isEverythingFilled;
 
 export const { reducer: surveyReducer } = surveySlice;
