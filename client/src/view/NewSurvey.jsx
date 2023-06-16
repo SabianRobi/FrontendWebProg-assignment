@@ -96,8 +96,8 @@ export function NewSurvey({ editedSurvey, setEditedSurvey }) {
   };
 
   const handleCancel = () => {
-    initialTextBoxText = "";
     setEditedSurvey(false);
+    reset();
     setErrorMessage("");
     setSuccessMessage("");
   };

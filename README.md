@@ -224,6 +224,8 @@ Az egész projektet tömörítsd be, kliensestül, szerverestül, és azt tölts
 [ ] MySurveys is only showing 10 surveys
 [ ] Min 24 points (curr: 25)
 [ ] Survey component gives a warning
+[ ] Make EditedSurvey state into redux
+[ ] errorMessage/suceesMessage to use redux
 
 # NOW:
 
