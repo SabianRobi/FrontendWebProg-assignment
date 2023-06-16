@@ -79,6 +79,11 @@ export const SurveyApiSlice = createApi({
         body: payload,
       }),
     }),
+
+    // Get asnswers
+    getSurveyAnswers: builder.query({
+      query: (id) => `results?surveyId=${id}`,
+    }),
   }),
 });
 
@@ -93,4 +98,5 @@ export const {
   useLazyGetSurveyByHashQuery,
   useGetSurveyByHashQuery,
   useSaveAnswerMutation,
+  useGetSurveyAnswersQuery,
 } = SurveyApiSlice;

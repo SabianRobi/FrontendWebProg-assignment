@@ -1,54 +1,84 @@
+import { useSelector } from "react-redux";
+import { selectSurveyId } from "../store/SurveySlice";
+import { useGetSurveyAnswersQuery } from "../store/SurveyApiSlice";
+import { Navigate } from "react-router-dom";
+
 export const Answers = () => {
+  const surveyId = useSelector(selectSurveyId);
+  if (surveyId === null) {
+    return <Navigate to="/my-surveys" replace />;
+  }
+  const { data: answersData, isLoading } = useGetSurveyAnswersQuery(surveyId);
+  const answers = [];
+  let noAnswers = false;
+  const questions = [];
+
+  if (!isLoading) {
+    // Checking if there is an answers
+    if (answersData.data.length == 0) {
+      noAnswers = true;
+    } else {
+      // Build the answer array which will look like this:
+      // [[q1 answers], [q2 answers], ...]
+      const questionCount = JSON.parse(answersData.data[0].content).reduce(
+        (acc, page) => acc + page.length,
+        0
+      );
+      for (let i = 0; i < questionCount; i++) {
+        answers[i] = [];
+      }
+
+      let questionCounter = 0;
+      answersData.data.map((answer) => {
+        questionCounter = 0;
+        JSON.parse(answer.content).map((page) => {
+          page.map((question) => {
+            answers[questionCounter++].push(question);
+          });
+        });
+      });
+
+      // Getting the questions: questions = [q1, q2, q3, ...]
+      JSON.parse(answersData.data[0].survey.content).map((page) => {
+        page.questions.map((question) => {
+          questions.push(question);
+        });
+      });
+    }
+  }
+
   return (
-    <div>
-      <h1>Answers</h1>
+    <>
+      {isLoading ? (
+        <p>Loading answers...</p>
+      ) : noAnswers ? (
+        <h2 className="text-center m-10">There are no answers yet</h2>
+      ) : (
+        <div>
+          <h1>Answers</h1>
 
-      <h2>Survey name</h2>
+          <h2>{answersData.data[0].survey.name}</h2>
 
-      <ol className="answers">
-        <li>
-          <h3>Question 1</h3>
-          <ul>
-            <li>
-              <p>Answer 1.1</p>
-            </li>
-            <li>
-              <p>Answer 1.2</p>
-            </li>
-            <li>
-              <p>Answer 1.3</p>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <h3>Question 2</h3>
-          <ul>
-            <li>
-              <p>Answer 2.1</p>
-            </li>
-            <li>
-              <p>Answer 2.2</p>
-            </li>
-            <li>
-              <p>Answer 2.3</p>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <h3>Question 3</h3>
-          <ul>
-            <li>
-              <p>Answer 3.1</p>
-            </li>
-            <li>
-              <p>Answer 3.2</p>
-            </li>
-            <li>
-              <p>Answer 3.3</p>
-            </li>
-          </ul>
-        </li>
-      </ol>
-    </div>
+          <ol className="answers">
+            {answers.map((answers, index) => {
+              return (
+                <li key={index}>
+                  <h3>{questions[index]}</h3>
+                  <ul>
+                    {answers.map((answer, aIndex) => {
+                      return (
+                        <li key={index + "." + aIndex}>
+                          <p>{answer}</p>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+      )}
+    </>
   );
 };

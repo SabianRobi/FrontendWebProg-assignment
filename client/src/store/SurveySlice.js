@@ -4,9 +4,10 @@ const initialState = {
   accessToken: null,
   user: null,
   survey: {
-    isFilling: false,
-    currentPage: null,
-    data: null,
+    isFilling: false, // To handle answer giving
+    currentPage: null, // To handle answer giving
+    data: null, // To handle answer giving
+    id: null, // To get the answers
   },
 };
 
@@ -39,6 +40,10 @@ const surveySlice = createSlice({
     setPrevPage: (state) => {
       state.survey.currentPage--;
     },
+
+    setSurveyId: (state, { payload: id }) => {
+      state.survey.id = id;
+    },
   },
 });
 
@@ -50,6 +55,7 @@ export const {
   setPage,
   setNextPage,
   setPrevPage,
+  setSurveyId,
 } = surveySlice.actions;
 
 // Selectors
@@ -60,5 +66,6 @@ export const selectIsLoggedIn = (state) => {
 };
 export const selectSurvey = (state) => state.survey.survey;
 export const selectSurveyPage = (state) => state.survey.survey.currentPage;
+export const selectSurveyId = (state) => state.survey.survey.id;
 
 export const { reducer: surveyReducer } = surveySlice;

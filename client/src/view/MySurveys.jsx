@@ -10,8 +10,8 @@ import {
   useGetUserSurveysQuery,
   useLazyGetUserSurveysQuery,
 } from "../store/SurveyApiSlice";
-import { useSelector } from "react-redux";
-import { selectUser } from "../store/SurveySlice";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUser, setSurveyId } from "../store/SurveySlice";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -23,6 +23,7 @@ export function MySurveys({ setEditedSurvey }) {
   const user = useSelector(selectUser);
   let { data: surveys, isLoading } = useGetUserSurveysQuery(user.id);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleDelete = async (id) => {
     await doDeleteSurvey(id);
@@ -53,6 +54,13 @@ export function MySurveys({ setEditedSurvey }) {
 
     console.log("Redirecting...");
     navigate(`/new-survey`, { replace: true });
+  };
+
+  const handleSeeAnswers = (id) => {
+    dispatch(setSurveyId(id));
+
+    console.log("Redirecting to answers...");
+    navigate(`/answers`, { replace: true });
   };
 
   return (
@@ -92,6 +100,7 @@ export function MySurveys({ setEditedSurvey }) {
                       icon={faComment}
                       style={{ color: "#ffffff" }}
                       className="p-1 m-1 hover:cursor-pointer"
+                      onClick={() => handleSeeAnswers(survey.id)}
                     />
                     <FontAwesomeIcon
                       icon={faLink}

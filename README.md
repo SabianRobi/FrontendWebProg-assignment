@@ -197,7 +197,7 @@ Az egész projektet tömörítsd be, kliensestül, szerverestül, és azt tölts
 [X] Kérdőív: csak kitöltött oldal esetén lehet továbblapozni (1pt)
 [X] Kérdőív: lapozón vizuálisan látszik, hogy mely lapnál tartunk (1pt)
 [X] Kérdőív: beküldés helyes működése (2pt)
-[ ] Válaszok: a kiválasztott kérdőívre adott válaszok megjelennek (2pt)
+[X] Válaszok: a kiválasztott kérdőívre adott válaszok megjelennek (2pt)
 [X] Profil: csak bejelentkezve érhető el, megfelelő tartalommal (2pt)
 [X] Profil: Kijelentkezés gomb működik (1pt)
 [X] Igényes megjelenés (2pt)
@@ -210,19 +210,12 @@ Az egész projektet tömörítsd be, kliensestül, szerverestül, és azt tölts
 # Jellegzetesség
 
 - Kérdőív oldalai/kérdései szövegesített JSON formátumban mentődnek el adatbázisban
-
-# Ismert hibák
-
-- Oldal újratöltésekor elveszik a bejelentkezés (nincs cookieban/localstorage-ban tárolva adat)
-- Kérdőív létrehozása/módosístása után a textbox-ban marad a kérdőív "kódja"
+- Oldal újratöltésekor elveszik a bejelentkezés (nincs cookieban / localstorage-ban tárolva adat)
 - Ha egy kérdőívet el kezdünk szerkeszteni, az új kérdőív létrehozása lapon mindaddig a módosítandó kérdőív jelenik meg, míg le nem mégsézzük.
 
 # My requirements
 
-[ ] Redirect to '/' after logout
-[X] Protect routes
 [ ] MySurveys is only showing 10 surveys
-[ ] Min 24 points (curr: 25)
 [ ] Survey component gives a warning
 [ ] Make EditedSurvey state into redux
 [ ] errorMessage/suceesMessage to use redux
