@@ -207,7 +207,7 @@ Az egész projektet tömörítsd be, kliensestül, szerverestül, és azt tölts
 [X] 1 hét késés (-3pt)
 [ ] 2 hét késés (-6pt)
 
-# Jellegzetesség
+## Megoldás jellegzetessége
 
 - Kérdőív oldalai/kérdései szövegesített JSON formátumban mentődnek el adatbázisban
 - Oldal újratöltésekor elveszik a bejelentkezés (nincs cookieban / localstorage-ban tárolva adat)
