@@ -11,13 +11,17 @@ import {
   useLazyGetUserSurveysQuery,
 } from "../store/SurveyApiSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { selectUser, setSurveyId } from "../store/SurveySlice";
-import { useState } from "react";
+import {
+  selectMessage,
+  selectUser,
+  setMessage,
+  setSurveyId,
+} from "../store/SurveySlice";
 import { useNavigate } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
 export function MySurveys({ setEditedSurvey }) {
-  const [message, setMessage] = useState({ success: true, message: "" });
+  const message = useSelector(selectMessage);
   const [doRefreshSurveys] = useLazyGetUserSurveysQuery();
   const [doDeleteSurvey] = useDeleteSurveyMutation();
   const user = useSelector(selectUser);
@@ -28,25 +32,39 @@ export function MySurveys({ setEditedSurvey }) {
   const handleDelete = async (id) => {
     await doDeleteSurvey(id);
     surveys = await doRefreshSurveys(user.id);
+
+    dispatch(
+      setMessage({
+        type: "success",
+        text: "Successfully deleted survey!",
+      })
+    );
+    setTimeout(() => {
+      dispatch(setMessage(false));
+    }, 2500);
   };
 
   const handleCopyToClipboard = (hash) => {
     navigator.clipboard.writeText(location.origin + "/survey/" + hash).then(
       () => {
         console.log("Successfully copied to clipboard");
-        setMessage({
-          success: true,
-          message: "Successfully copied to clipboard!",
-        });
+        dispatch(
+          setMessage({
+            type: "success",
+            text: "Successfully copied to clipboard!",
+          })
+        );
       },
       () => {
         console.error("Failed to copy to clipboard!");
-        setMessage({ success: false, message: "Failed to copy to clipboard!" });
+        dispatch(
+          setMessage({ type: "error", text: "Failed to copy to clipboard!" })
+        );
       }
     );
     setTimeout(() => {
-      setMessage({ success: true, message: "" });
-    }, 1500);
+      dispatch(setMessage(false));
+    }, 2500);
   };
 
   const handleEdit = (survey) => {
@@ -63,15 +81,25 @@ export function MySurveys({ setEditedSurvey }) {
     navigate(`/answers`, { replace: true });
   };
 
+  const handleFillSurvey = (hash) => {
+    navigate(`/survey/${hash}`, { replace: true });
+  };
+
   return (
     <div>
       <h1>My surveys</h1>
-      {message.message === "" ? (
-        ""
-      ) : message.success ? (
-        <p className="text-end text-green-600">{message.message}</p>
+      {message ? (
+        message.type === "success" ? (
+          <p className="mt-2 text-sm font-medium text-end text-green-500">
+            {message.text}!
+          </p>
+        ) : (
+          <p className="mt-2 text-sm font-medium text-end text-red-500">
+            {message.text}!
+          </p>
+        )
       ) : (
-        <p className="text-end text-red-600">{message.message}</p>
+        <></>
       )}
       {isLoading ? (
         <p className="text-center">Surveys loading...</p>
@@ -88,12 +116,18 @@ export function MySurveys({ setEditedSurvey }) {
             {surveys.data.map((survey) => {
               return (
                 <tr key={survey.id}>
-                  <td>{survey.name}</td>
+                  <td
+                    className="hover:cursor-pointer"
+                    title="Fill survey"
+                    onClick={() => handleFillSurvey(survey.hash)}>
+                    {survey.name}
+                  </td>
                   <td>
                     {new Date(survey.createdAt)
                       .toISOString()
                       .split("T")
-                      .join(" ")}
+                      .join(" ")
+                      .substring(0, 19)}
                   </td>
                   <td className="flex flex-row justify-end">
                     <FontAwesomeIcon
@@ -101,24 +135,28 @@ export function MySurveys({ setEditedSurvey }) {
                       style={{ color: "#ffffff" }}
                       className="p-1 m-1 hover:cursor-pointer"
                       onClick={() => handleSeeAnswers(survey.id)}
+                      title="Check answers"
                     />
                     <FontAwesomeIcon
                       icon={faLink}
                       style={{ color: "#2ab5d1" }}
                       className="p-1 m-1 hover:cursor-pointer"
                       onClick={() => handleCopyToClipboard(survey.hash)}
+                      title="Copy link to clipboard"
                     />
                     <FontAwesomeIcon
                       icon={faPencil}
                       style={{ color: "#f5aa3b" }}
                       className="p-1 m-1 hover:cursor-pointer"
                       onClick={() => handleEdit(survey)}
+                      title="Edit survey"
                     />
                     <FontAwesomeIcon
                       icon={faTrash}
                       style={{ color: "#bd0000" }}
                       className="p-1 m-1 hover:cursor-pointer"
                       onClick={() => handleDelete(survey.id)}
+                      title="Delete survey"
                     />
                   </td>
                 </tr>

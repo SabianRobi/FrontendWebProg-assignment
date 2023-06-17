@@ -4,11 +4,12 @@ const initialState = {
   accessToken: null,
   user: null,
   survey: {
-    isFilling: false, // To handle answer giving
+    maxPageWereAt: null, // To handle pagination visibility
     currentPage: null, // To handle answer giving
     data: null, // To handle answer giving
     id: null, // To get the answers
   },
+  message: false,
 };
 
 const surveySlice = createSlice({
@@ -27,22 +28,27 @@ const surveySlice = createSlice({
 
     // Survey filling
     setSurvey: (state, { payload }) => {
-      state.survey.isFilling = true;
+      state.survey.maxPageWereAt = 1;
       state.survey.currentPage = 1;
       state.survey.data = payload;
     },
     setPage: (state, { payload: page }) => {
       state.survey.currentPage = page;
     },
-    setNextPage: (state) => {
-      state.survey.currentPage = state.survey.currentPage + 1;
-    },
-    setPrevPage: (state) => {
-      state.survey.currentPage--;
+    setMaxPageWereAt: (state, { payload: page }) => {
+      if (state.survey.maxPageWereAt < page) {
+        state.survey.maxPageWereAt = page;
+      }
     },
 
+    // Listing answers
     setSurveyId: (state, { payload: id }) => {
       state.survey.id = id;
+    },
+
+    // Handling feedback messages
+    setMessage: (state, { payload }) => {
+      state.message = payload;
     },
   },
 });
@@ -53,9 +59,9 @@ export const {
   logout,
   setSurvey,
   setPage,
-  setNextPage,
-  setPrevPage,
+  setMaxPageWereAt,
   setSurveyId,
+  setMessage,
 } = surveySlice.actions;
 
 // Selectors
@@ -67,5 +73,7 @@ export const selectIsLoggedIn = (state) => {
 export const selectSurvey = (state) => state.survey.survey;
 export const selectSurveyPage = (state) => state.survey.survey.currentPage;
 export const selectSurveyId = (state) => state.survey.survey.id;
+export const selectMaxPageWereAt = (state) => state.survey.survey.maxPageWereAt;
+export const selectMessage = (state) => state.survey.message;
 
 export const { reducer: surveyReducer } = surveySlice;

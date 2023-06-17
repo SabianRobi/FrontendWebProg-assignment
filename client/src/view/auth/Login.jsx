@@ -1,20 +1,20 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLoginMutation } from "../../store/SurveyApiSlice";
-import { setCredentials } from "../../store/SurveySlice";
-import { useState } from "react";
+import {
+  selectMessage,
+  setCredentials,
+  setMessage,
+} from "../../store/SurveySlice";
 import { useForm } from "react-hook-form";
 
 export const Login = () => {
   const [doLogin] = useLoginMutation();
-  const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  const message = useSelector(selectMessage);
   const dispatch = useDispatch();
   const { register } = useForm();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setErrorMessage("");
-    setSuccessMessage("");
     const email = document.querySelector("#email").value;
     const pw = document.querySelector("#password").value;
 
@@ -26,13 +26,23 @@ export const Login = () => {
 
     const response = await doLogin(cred);
 
-    if (response["error"]) {
-      setErrorMessage(response["error"]["data"]["message"]);
-      console.error("Error:", response["error"]["data"]["message"]);
-    } else {
-      setSuccessMessage("Successfully logged in!");
-      console.info("Successfully logged in!");
-
+    dispatch(
+      setMessage(
+        response["error"]
+          ? {
+              text: response["error"]["data"]["message"],
+              type: "error",
+            }
+          : {
+              text: "Successfully logged in!",
+              type: "success",
+            }
+      )
+    );
+    setTimeout(() => {
+      dispatch(setMessage(false));
+    }, 2500);
+    if (!response["error"]) {
       const data = response["data"];
       const userInfo = { accessToken: data.accessToken, user: data.user };
       dispatch(setCredentials(userInfo));
@@ -44,16 +54,20 @@ export const Login = () => {
       <h1 className="text-center my-6">Login</h1>
       <div className="max-w-sm mx-auto">
         <form className="mx-3 my-6" id="loginForm" onSubmit={handleLogin}>
-          {errorMessage && (
-            <p className="mt-2 text-sm text-red-500 font-medium text-end">
-              {errorMessage}!
-            </p>
+          {message ? (
+            message.type === "success" ? (
+              <p className="mt-2 text-sm font-medium text-end text-green-500">
+                {message.text}!
+              </p>
+            ) : (
+              <p className="mt-2 text-sm font-medium text-end text-red-500">
+                {message.text}!
+              </p>
+            )
+          ) : (
+            <></>
           )}
-          {successMessage && (
-            <p className="mt-2 text-sm text-green-500 font-medium text-end">
-              {successMessage}!
-            </p>
-          )}
+
           <div className="mb-6">
             <label
               htmlFor="email"

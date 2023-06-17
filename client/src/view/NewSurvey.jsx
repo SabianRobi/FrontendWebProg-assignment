@@ -1,17 +1,18 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   useCreateSurveyMutation,
   useModifySurveyMutation,
 } from "../store/SurveyApiSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { selectMessage, setMessage } from "../store/SurveySlice";
 
 export function NewSurvey({ editedSurvey, setEditedSurvey }) {
-  console.log(editedSurvey);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  // console.log(editedSurvey);
   const [doCreateSurvey] = useCreateSurveyMutation();
   const [doModifySurvey] = useModifySurveyMutation();
+  const dispatch = useDispatch();
+  const message = useSelector(selectMessage);
 
   const { handleSubmit, register, reset } = useForm();
   let initialTextBoxText = "";
@@ -19,8 +20,6 @@ export function NewSurvey({ editedSurvey, setEditedSurvey }) {
   const handleCreate = async (data) => {
     let error = false;
     console.log("Data beeing processed: ", data);
-    setErrorMessage("");
-    setSuccessMessage("");
     let survey = { name: "", content: [] }; // The final object
 
     // Count and check pages
@@ -28,7 +27,15 @@ export function NewSurvey({ editedSurvey, setEditedSurvey }) {
     // console.log("pages", pages);
 
     if (pages.length <= 1) {
-      setErrorMessage("At least one page is required!");
+      dispatch(
+        setMessage({
+          type: "error",
+          text: "At least one page is required!",
+        })
+      );
+      setTimeout(() => {
+        dispatch(setMessage(false));
+      }, 2500);
       console.error("At least one page is required!");
       error = true;
       return;
@@ -43,7 +50,15 @@ export function NewSurvey({ editedSurvey, setEditedSurvey }) {
       let questions = page.split("\n");
       // console.log("questions", questions);
       if (questions.length < 2) {
-        setErrorMessage("At least one question per page is required!");
+        dispatch(
+          setMessage({
+            type: "error",
+            text: "At least one question per page is required!",
+          })
+        );
+        setTimeout(() => {
+          dispatch(setMessage(false));
+        }, 2500);
         console.error("At least one question per page is required!");
         error = true;
         return;
@@ -52,7 +67,15 @@ export function NewSurvey({ editedSurvey, setEditedSurvey }) {
       questions.slice(1).forEach((question) => {
         // console.log("question", question);
         if (question.trim().length === 0) {
-          setErrorMessage("A question can not be empty!");
+          dispatch(
+            setMessage({
+              type: "error",
+              text: "A question can not be empty!",
+            })
+          );
+          setTimeout(() => {
+            dispatch(setMessage(false));
+          }, 2500);
           console.error("A question can not be empty!");
           error = true;
           return;
@@ -77,29 +100,34 @@ export function NewSurvey({ editedSurvey, setEditedSurvey }) {
       response = await doCreateSurvey(survey);
     }
 
-    if (response["error"]) {
-      setErrorMessage(response["error"]["data"]["message"]);
-      console.error("Error:", response["error"]["data"]["message"]);
-    } else {
-      console.info("Success");
-      setSuccessMessage(
-        `Successfully ${editedSurvey ? "updated" : "created"} survey!`
-      );
+    dispatch(
+      setMessage(
+        response["error"]
+          ? {
+              text: response["error"]["data"]["message"],
+              type: "error",
+            }
+          : {
+              text: `Successfully ${
+                editedSurvey ? "updated" : "created"
+              } survey!`,
+              type: "success",
+            }
+      )
+    );
+    setTimeout(() => {
+      dispatch(setMessage(false));
+    }, 2500);
 
+    if (!response["error"]) {
       setEditedSurvey(false);
       reset();
-      setErrorMessage("");
-      setTimeout(() => {
-        setSuccessMessage(false);
-      }, 4000);
     }
   };
 
   const handleCancel = () => {
     setEditedSurvey(false);
     reset();
-    setErrorMessage("");
-    setSuccessMessage("");
   };
 
   if (editedSurvey) {
@@ -137,15 +165,18 @@ export function NewSurvey({ editedSurvey, setEditedSurvey }) {
         </label>
 
         {/* Feedback */}
-        {errorMessage && (
-          <p className="mt-2 text-sm text-red-500 font-medium text-end">
-            {errorMessage}!
-          </p>
-        )}
-        {successMessage && (
-          <p className="mt-2 text-sm text-green-500 font-medium text-end">
-            {successMessage}!
-          </p>
+        {message ? (
+          message.type === "success" ? (
+            <p className="mt-2 text-sm font-medium text-end text-green-500">
+              {message.text}!
+            </p>
+          ) : (
+            <p className="mt-2 text-sm font-medium text-end text-red-500">
+              {message.text}!
+            </p>
+          )
+        ) : (
+          <></>
         )}
 
         {/* Textarea */}

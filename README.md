@@ -203,7 +203,7 @@ Az egész projektet tömörítsd be, kliensestül, szerverestül, és azt tölts
 [X] Igényes megjelenés (2pt)
 [ ] Pluszok: a kérdőíveim lista lapozható (pl. 5-ösével) (+2pt)
 [ ] Pluszok: a válaszok lista lapozható (pl. 10-esével) (+2pt)
-[ ] Pluszok: a kérdőív linkje egy gombra kattintva a vágólapra másolható (+1pt)
+[X] Pluszok: a kérdőív linkje egy gombra kattintva a vágólapra másolható (+1pt)
 [X] 1 hét késés (-3pt)
 [ ] 2 hét késés (-6pt)
 
@@ -218,7 +218,8 @@ Az egész projektet tömörítsd be, kliensestül, szerverestül, és azt tölts
 [ ] MySurveys is only showing 10 surveys
 [ ] Survey component gives a warning
 [ ] Make EditedSurvey state into redux
-[ ] errorMessage/suceesMessage to use redux
+[X] errorMessage/suceesMessage to use redux
+[X] Fill database with surveys and answers
 
 # NOW:
 

@@ -1,18 +1,17 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRegisterMutation } from "../../store/SurveyApiSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { selectMessage, setMessage } from "../../store/SurveySlice";
 
 export const Register = () => {
   const [doRegister] = useRegisterMutation();
-  const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
-  const { register } = useForm();
+  const { register, reset } = useForm();
+  const message = useSelector(selectMessage);
+  const dispatch = useDispatch();
 
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    setErrorMessage("");
-    setSuccessMessage("");
     const fullname = document.querySelector("#fullname");
     const email = document.querySelector("#email");
     const pw = document.querySelector("#password");
@@ -25,16 +24,24 @@ export const Register = () => {
 
     const response = await doRegister(cred);
 
-    if (response["error"]) {
-      setErrorMessage(response["error"]["data"]["message"]);
-      console.error("Error:", response["error"]["data"]["message"]);
-    } else {
-      setSuccessMessage("Successfully registered, please log in");
-      console.info("Successfully registered!");
-
-      fullname.value = "";
-      email.value = "";
-      pw.value = "";
+    dispatch(
+      setMessage(
+        response["error"]
+          ? {
+              text: response["error"]["data"]["message"],
+              type: "error",
+            }
+          : {
+              text: "Successfully registered, please log in!",
+              type: "success",
+            }
+      )
+    );
+    setTimeout(() => {
+      dispatch(setMessage(false));
+    }, 2500);
+    if (!response["error"]) {
+      reset();
     }
   };
 
@@ -47,15 +54,18 @@ export const Register = () => {
           id="registerForm"
           name="registerForm"
           onSubmit={handleRegister}>
-          {errorMessage && (
-            <p className="mt-2 text-sm text-red-500 font-medium text-end">
-              {errorMessage}!
-            </p>
-          )}
-          {successMessage && (
-            <p className="mt-2 text-sm text-green-500 font-medium text-end">
-              {successMessage}!
-            </p>
+          {message ? (
+            message.type === "success" ? (
+              <p className="mt-2 text-sm font-medium text-end text-green-500">
+                {message.text}!
+              </p>
+            ) : (
+              <p className="mt-2 text-sm font-medium text-end text-red-500">
+                {message.text}!
+              </p>
+            )
+          ) : (
+            <></>
           )}
           <div className="mb-6">
             <label

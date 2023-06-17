@@ -22,27 +22,31 @@ export function Menubar() {
           <>
             <Link
               className="bg-blue-800 hover:bg-blue-600 hover:text-white rounded p-2 m-2"
-              to="/new-survey">
+              to="/new-survey"
+              title="Create new survey">
               New survey
             </Link>
             <Link
               className="bg-blue-800 hover:bg-blue-600 hover:text-white rounded p-2 m-2"
-              to="/my-surveys">
+              to="/my-surveys"
+              title="Show your surveys">
               My surveys
             </Link>
-            <Link
+            {/* <Link
               className="bg-blue-800 hover:bg-blue-600 hover:text-white rounded p-2 m-2"
               to="/answers">
               Answers
-            </Link>
+            </Link> */}
             <Link
               className="bg-blue-800 hover:bg-blue-600 hover:text-white rounded p-2 m-2"
-              to="/profile">
+              to="/profile"
+              title="Show profile info">
               Profile
             </Link>
             <div
               className="bg-red-800 hover:bg-red-600 hover:text-white rounded p-2 m-2 hover:cursor-pointer"
               to="/logout"
+              title="Log out"
               onClick={handleLogut}>
               Logout
             </div>

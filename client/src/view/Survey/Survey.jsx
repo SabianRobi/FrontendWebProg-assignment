@@ -1,12 +1,11 @@
 import { Navigate, useParams } from "react-router-dom";
 import { useGetSurveyByHashQuery } from "../../store/SurveyApiSlice";
-import { selectSurvey, setSurvey } from "../../store/SurveySlice";
-import { useDispatch, useSelector } from "react-redux";
+import { setSurvey } from "../../store/SurveySlice";
+import { useDispatch } from "react-redux";
 import { Page } from "./Page";
 
 export function Survey() {
   const { hash } = useParams();
-  const surveyData = useSelector(selectSurvey);
   const dispatch = useDispatch();
 
   let { data: surveyFetchedData, isLoading } = useGetSurveyByHashQuery(hash);
@@ -14,7 +13,7 @@ export function Survey() {
     return <Navigate to="/" replace />;
   }
 
-  if (!isLoading && !surveyData.isFilling) {
+  if (!isLoading) {
     const survey = {
       ...surveyFetchedData.data[0],
       pages: JSON.parse(surveyFetchedData.data[0].content),

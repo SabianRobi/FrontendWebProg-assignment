@@ -5,14 +5,15 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  selectMaxPageWereAt,
+  selectMessage,
   selectSurvey,
   selectSurveyPage,
-  setNextPage,
+  setMaxPageWereAt,
+  setMessage,
   setPage,
-  setPrevPage,
 } from "../../store/SurveySlice";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
 import { useSaveAnswerMutation } from "../../store/SurveyApiSlice";
 
 /* eslint-disable react/prop-types */
@@ -20,9 +21,9 @@ export const Page = () => {
   const dispatch = useDispatch();
   const survey = useSelector(selectSurvey);
   const page = useSelector(selectSurveyPage);
-  const [error, setError] = useState(false);
-  const [success, setSuccess] = useState(false);
   const [doSaveAnswers] = useSaveAnswerMutation();
+  const maxPageWereAt = useSelector(selectMaxPageWereAt);
+  const message = useSelector(selectMessage);
 
   const { register, handleSubmit, getValues, reset } = useForm();
 
@@ -40,9 +41,14 @@ export const Page = () => {
     });
 
     if (totalAnswers !== totalQuestions) {
-      setError("Filling every field is required!");
+      dispatch(
+        setMessage({
+          text: "Filling every field is required!",
+          type: "error",
+        })
+      );
       setTimeout(() => {
-        setError(false);
+        dispatch(setMessage(false));
       }, 2500);
       return;
     }
@@ -55,39 +61,56 @@ export const Page = () => {
     });
 
     if (resp["error"]) {
-      setError(resp["error"]["data"]["message"]);
+      dispatch(
+        setMessage({
+          text: resp["error"]["data"]["message"],
+          type: "error",
+        })
+      );
       console.error("Error:", resp["error"]["data"]["message"]);
-      setTimeout(() => {
-        setError(false);
-      }, 4000);
     } else {
-      setSuccess("Successfully processed the answers!");
-      console.info("Successfully processed the answers!");
+      dispatch(
+        setMessage({
+          text: "Answers successfully saved!",
+          type: "success",
+        })
+      );
+      console.info("Answers successfully saved!");
 
-      console.log(resp);
       reset();
     }
+    setTimeout(() => {
+      dispatch(setMessage(false));
+    }, 2500);
   };
 
-  const handlePaginate = (fn, nextPage) => {
+  const handlePaginate = (pageNumber) => {
     console.log("Paginating");
 
-    let valid = true;
-    getValues().answers[page - 1].map((question) => {
-      if (question.trim() === "") valid = false;
-    });
-
-    if (valid) {
-      if (nextPage) {
-        dispatch(fn(nextPage));
+    if (pageNumber <= page) {
+      // Go to prev page
+      dispatch(setPage(pageNumber));
+    } else if (pageNumber > page) {
+      // Validate fileds & go to next page
+      let valid = true;
+      getValues().answers[page - 1].map((question) => {
+        if (question.trim() === "") valid = false;
+      });
+      if (valid) {
+        dispatch(setMaxPageWereAt(page + 1));
+        dispatch(setPage(pageNumber));
       } else {
-        dispatch(fn());
+        dispatch(
+          setMessage({
+            text: "Filling every field is required!",
+            type: "error",
+          })
+        );
+
+        setTimeout(() => {
+          dispatch(setMessage(false));
+        }, 2500);
       }
-    } else {
-      setError("Filling every field is required!");
-      setTimeout(() => {
-        setError(false);
-      }, 2500);
     }
   };
 
@@ -99,8 +122,19 @@ export const Page = () => {
       {/* Page title */}
       <h3>{survey.data.pages[page - 1].title}</h3>
 
-      {error ? <p className="text-red-500 text-end">{error}</p> : ""}
-      {success ? <p className="text-green-600 text-end">{success}</p> : ""}
+      {message ? (
+        message.type === "success" ? (
+          <p className="mt-2 text-sm font-medium text-end text-green-500">
+            {message.text}!
+          </p>
+        ) : (
+          <p className="mt-2 text-sm font-medium text-end text-red-500">
+            {message.text}!
+          </p>
+        )
+      ) : (
+        <></>
+      )}
 
       {/* Questions */}
       {survey.data.pages[page - 1].questions.map((question, qIndex) => {
@@ -133,7 +167,7 @@ export const Page = () => {
                 page - 1 === 0
                   ? () => {}
                   : () => {
-                      handlePaginate(setPrevPage, false);
+                      handlePaginate(page - 1);
                     }
               }
               href="#"
@@ -146,20 +180,22 @@ export const Page = () => {
             </span>
           </li>
 
-          {survey.data.pages.map((_, pIndex) => {
+          {survey.data.pages.map((pageContent, pIndex) => {
             return (
               <li key={"paginator." + (pIndex + 1)}>
                 <span
                   onClick={() => {
-                    handlePaginate(setPage, pIndex + 1);
+                    handlePaginate(pIndex + 1);
                   }}
                   href="#"
                   className={
-                    pIndex + 1 === page
+                    pIndex + 1 < maxPageWereAt
+                      ? "hover:cursor-pointer px-3 py-2 leading-tight border bg-green-900 border-green-800 text-gray-300 hover:bg-green-700 hover:text-white"
+                      : pIndex + 1 === page
                       ? "hover:cursor-pointer px-3 py-2 leading-tight border bg-gray-600 border-gray-700 text-white"
                       : "hover:cursor-pointer px-3 py-2 leading-tight border bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white"
                   }>
-                  {pIndex + 1}
+                  {pageContent.title}
                 </span>
               </li>
             );
@@ -171,7 +207,7 @@ export const Page = () => {
                 page === survey.data.pages.length
                   ? () => {}
                   : () => {
-                      handlePaginate(setNextPage, false);
+                      handlePaginate(page + 1);
                     }
               }
               className="px-3 py-2 ml-0 leading-tight border rounded-r-lg bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white hover:cursor-pointer">
