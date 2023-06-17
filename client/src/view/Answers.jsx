@@ -5,10 +5,10 @@ import { Navigate } from "react-router-dom";
 
 export const Answers = () => {
   const surveyId = useSelector(selectSurveyId);
+  const { data: answersData, isLoading } = useGetSurveyAnswersQuery(surveyId);
   if (surveyId === null) {
     return <Navigate to="/my-surveys" replace />;
   }
-  const { data: answersData, isLoading } = useGetSurveyAnswersQuery(surveyId);
   const answers = [];
   let noAnswers = false;
   const questions = [];

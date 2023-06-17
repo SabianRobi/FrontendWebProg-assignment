@@ -84,6 +84,8 @@ export const Page = () => {
       console.info("Answers successfully saved!");
 
       // Reseting form
+      dispatch(setMaxPageWereAt(-1));
+      dispatch(setPage(1));
       reset();
     }
     setTimeout(() => {

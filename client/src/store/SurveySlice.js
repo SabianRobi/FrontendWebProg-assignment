@@ -42,6 +42,9 @@ const surveySlice = createSlice({
       state.survey.currentPage = page;
     },
     setMaxPageWereAt: (state, { payload: page }) => {
+      if (page === -1) {
+        state.survey.maxPageWereAt = 1;
+      }
       if (state.survey.maxPageWereAt < page) {
         state.survey.maxPageWereAt = page;
       }
