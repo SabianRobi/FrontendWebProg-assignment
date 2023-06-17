@@ -14,13 +14,14 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   selectMessage,
   selectUser,
+  setEditedSurvey,
   setMessage,
   setSurveyId,
 } from "../store/SurveySlice";
 import { useNavigate } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
-export function MySurveys({ setEditedSurvey }) {
+export function MySurveys() {
   const message = useSelector(selectMessage);
   const [doRefreshSurveys] = useLazyGetUserSurveysQuery();
   const [doDeleteSurvey] = useDeleteSurveyMutation();
@@ -68,7 +69,7 @@ export function MySurveys({ setEditedSurvey }) {
   };
 
   const handleEdit = (survey) => {
-    setEditedSurvey(survey);
+    dispatch(setEditedSurvey(survey));
 
     console.log("Redirecting...");
     navigate(`/new-survey`, { replace: true });

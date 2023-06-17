@@ -215,9 +215,10 @@ Az egész projektet tömörítsd be, kliensestül, szerverestül, és azt tölts
 
 # My requirements
 
+[ ] Comment
 [ ] MySurveys is only showing 10 surveys
 [ ] Survey component gives a warning
-[ ] Make EditedSurvey state into redux
+[X] Make EditedSurvey to use redux
 [X] errorMessage/suceesMessage to use redux
 [X] Fill database with surveys and answers
 

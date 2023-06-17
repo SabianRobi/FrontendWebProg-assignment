@@ -9,11 +9,8 @@ import { Answers } from "./view/Answers.jsx";
 import { Profile } from "./view/Profile.jsx";
 import { Survey } from "./view/Survey/Survey";
 import Protected from "./view/auth/Protected";
-import { useState } from "react";
 
 function App() {
-  const [editedSurvey, setEditedSurvey] = useState(false);
-
   return (
     <BrowserRouter>
       <Routes>
@@ -37,10 +34,7 @@ function App() {
             path="/new-survey"
             element={
               <Protected only={"user"}>
-                <NewSurvey
-                  editedSurvey={editedSurvey}
-                  setEditedSurvey={setEditedSurvey}
-                />
+                <NewSurvey />
               </Protected>
             }
           />
@@ -48,7 +42,7 @@ function App() {
             path="/my-surveys"
             element={
               <Protected only={"user"}>
-                <MySurveys setEditedSurvey={setEditedSurvey} />
+                <MySurveys />
               </Protected>
             }
           />

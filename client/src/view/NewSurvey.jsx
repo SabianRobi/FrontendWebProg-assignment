@@ -5,14 +5,20 @@ import {
   useModifySurveyMutation,
 } from "../store/SurveyApiSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { selectMessage, setMessage } from "../store/SurveySlice";
+import {
+  selectEditedSurvey,
+  selectMessage,
+  setEditedSurvey,
+  setMessage,
+} from "../store/SurveySlice";
 
-export function NewSurvey({ editedSurvey, setEditedSurvey }) {
+export function NewSurvey() {
   // console.log(editedSurvey);
   const [doCreateSurvey] = useCreateSurveyMutation();
   const [doModifySurvey] = useModifySurveyMutation();
   const dispatch = useDispatch();
   const message = useSelector(selectMessage);
+  const editedSurvey = useSelector(selectEditedSurvey);
 
   const { handleSubmit, register, reset } = useForm();
   let initialTextBoxText = "";
@@ -120,13 +126,13 @@ export function NewSurvey({ editedSurvey, setEditedSurvey }) {
     }, 2500);
 
     if (!response["error"]) {
-      setEditedSurvey(false);
+      dispatch(setEditedSurvey(false));
       reset();
     }
   };
 
   const handleCancel = () => {
-    setEditedSurvey(false);
+    dispatch(setEditedSurvey(false));
     reset();
   };
 

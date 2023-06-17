@@ -9,6 +9,7 @@ const initialState = {
     data: null, // To handle answer giving
     id: null, // To get the answers
   },
+  editedSurvey: false,
   message: false,
 };
 
@@ -26,11 +27,16 @@ const surveySlice = createSlice({
       state.accessToken = null;
     },
 
+    // Survey editing
+    setEditedSurvey: (state, { payload: survey }) => {
+      state.editedSurvey = survey;
+    },
+
     // Survey filling
-    setSurvey: (state, { payload }) => {
+    setSurvey: (state, { payload: surveyData }) => {
       state.survey.maxPageWereAt = 1;
       state.survey.currentPage = 1;
-      state.survey.data = payload;
+      state.survey.data = surveyData;
     },
     setPage: (state, { payload: page }) => {
       state.survey.currentPage = page;
@@ -57,6 +63,7 @@ const surveySlice = createSlice({
 export const {
   setCredentials,
   logout,
+  setEditedSurvey,
   setSurvey,
   setPage,
   setMaxPageWereAt,
@@ -70,6 +77,7 @@ export const selectIsLoggedIn = (state) => {
   const user = state.survey.user;
   return user !== null;
 };
+export const selectEditedSurvey = (state) => state.survey.editedSurvey;
 export const selectSurvey = (state) => state.survey.survey;
 export const selectSurveyPage = (state) => state.survey.survey.currentPage;
 export const selectSurveyId = (state) => state.survey.survey.id;
