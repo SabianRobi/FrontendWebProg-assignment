@@ -9,9 +9,11 @@ export const Register = () => {
   const message = useSelector(selectMessage);
   const dispatch = useDispatch();
 
+  // Handle registering
   const handleRegister = async (e) => {
     e.preventDefault();
 
+    // Sending request to DB
     const fullname = document.querySelector("#fullname");
     const email = document.querySelector("#email");
     const pw = document.querySelector("#password");
@@ -24,6 +26,7 @@ export const Register = () => {
 
     const response = await doRegister(cred);
 
+    // Giving feedback
     dispatch(
       setMessage(
         response["error"]
@@ -41,6 +44,7 @@ export const Register = () => {
       dispatch(setMessage(false));
     }, 2500);
     if (!response["error"]) {
+      // Reseting form
       reset();
     }
   };
@@ -54,6 +58,8 @@ export const Register = () => {
           id="registerForm"
           name="registerForm"
           onSubmit={handleRegister}>
+
+            {/* Feedback */}
           {message ? (
             message.type === "success" ? (
               <p className="mt-2 text-sm font-medium text-end text-green-500">
@@ -67,6 +73,8 @@ export const Register = () => {
           ) : (
             <></>
           )}
+
+          {/* Full name field */}
           <div className="mb-6">
             <label
               htmlFor="fullname"
@@ -83,6 +91,8 @@ export const Register = () => {
               required
             />
           </div>
+
+          {/* Email field */}
           <div className="mb-6">
             <label
               htmlFor="email"
@@ -99,6 +109,8 @@ export const Register = () => {
               required
             />
           </div>
+
+          {/* Password field */}
           <div className="mb-6">
             <label
               htmlFor="password"
@@ -115,6 +127,8 @@ export const Register = () => {
               required
             />
           </div>
+
+          {/* Register button */}
           <div className="mt-6 flex items-center justify-end gap-x-6">
             <button
               type="submit"

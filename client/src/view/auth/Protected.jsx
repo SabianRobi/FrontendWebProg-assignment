@@ -6,6 +6,7 @@ import { selectIsLoggedIn } from "../../store/SurveySlice";
 const Protected = ({ only, children }) => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
 
+  // Filter user
   if (only === "guest") {
     return isLoggedIn ? <Navigate to="/" replace /> : children;
   } else if (only === "user") {

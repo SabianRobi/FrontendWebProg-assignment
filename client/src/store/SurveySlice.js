@@ -2,15 +2,15 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   accessToken: null,
-  user: null,
+  user: null, // To display user info on profile page
   survey: {
     maxPageWereAt: null, // To handle pagination visibility
     currentPage: null, // To handle answer giving
     data: null, // To handle answer giving
     id: null, // To get the answers
   },
-  editedSurvey: false,
-  message: false,
+  editedSurvey: false, // To edit surveys
+  message: false, // To handle messsage feedbacks
 };
 
 const surveySlice = createSlice({

@@ -27,12 +27,15 @@ export const Page = () => {
 
   const { register, handleSubmit, getValues, reset } = useForm();
 
+  // Handle survey submitting
   const onSubmit = async (data) => {
+    // Counting total question count
     const totalQuestions = survey.data.pages.reduce(
       (acc, value) => value.questions.length + acc,
       0
     );
 
+    // Counting given answer count
     let totalAnswers = 0;
     getValues().answers.map((page) => {
       page.map((question) => {
@@ -41,6 +44,7 @@ export const Page = () => {
     });
 
     if (totalAnswers !== totalQuestions) {
+      // Giving feedback if neccessary
       dispatch(
         setMessage({
           text: "Filling every field is required!",
@@ -53,6 +57,7 @@ export const Page = () => {
       return;
     }
 
+    // Sending data to DB
     console.log("Saving answers...");
     const answerData = Object.values(data)[0];
     const resp = await doSaveAnswers({
@@ -60,6 +65,7 @@ export const Page = () => {
       content: JSON.stringify(answerData),
     });
 
+    // Giving feedback
     if (resp["error"]) {
       dispatch(
         setMessage({
@@ -77,6 +83,7 @@ export const Page = () => {
       );
       console.info("Answers successfully saved!");
 
+      // Reseting form
       reset();
     }
     setTimeout(() => {
@@ -84,9 +91,8 @@ export const Page = () => {
     }, 2500);
   };
 
+  // Handle paginating
   const handlePaginate = (pageNumber) => {
-    console.log("Paginating");
-
     if (pageNumber <= page) {
       // Go to prev page
       dispatch(setPage(pageNumber));
@@ -122,6 +128,7 @@ export const Page = () => {
       {/* Page title */}
       <h3>{survey.data.pages[page - 1].title}</h3>
 
+      {/* Feedback */}
       {message ? (
         message.type === "success" ? (
           <p className="mt-2 text-sm font-medium text-end text-green-500">
@@ -161,6 +168,7 @@ export const Page = () => {
       <nav className="flex flex-row justify-between">
         <span></span>
         <ul className="inline-flex -space-x-px">
+          {/* Previous page */}
           <li key={"prev"}>
             <span
               onClick={
@@ -180,6 +188,7 @@ export const Page = () => {
             </span>
           </li>
 
+          {/* Pages */}
           {survey.data.pages.map((pageContent, pIndex) => {
             return (
               <li key={"paginator." + (pIndex + 1)}>
@@ -201,6 +210,7 @@ export const Page = () => {
             );
           })}
 
+          {/* Next page */}
           <li key={"next"}>
             <span
               onClick={
@@ -219,6 +229,8 @@ export const Page = () => {
             </span>
           </li>
         </ul>
+
+        {/* Submit survey button */}
         <button
           type="submit"
           className="bg-green-800 hover:bg-green-600 hover:text-white rounded p-2 m-2">

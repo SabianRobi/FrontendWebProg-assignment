@@ -7,6 +7,7 @@ export function Profile() {
   const { data: surveys, isLoading } = useGetUserSurveysQuery(user.id);
   const dispatch = useDispatch();
 
+  // Handle logging out
   const handleLogut = () => {
     dispatch(logout());
   };

@@ -30,10 +30,13 @@ export function MySurveys() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // Handle deleting
   const handleDelete = async (id) => {
+    // Sending request to DB
     await doDeleteSurvey(id);
     surveys = await doRefreshSurveys(user.id);
 
+    // Giving feedback
     dispatch(
       setMessage({
         type: "success",
@@ -45,7 +48,9 @@ export function MySurveys() {
     }, 2500);
   };
 
+  // Copying link to clipboatd
   const handleCopyToClipboard = (hash) => {
+    // Copying to clipboard and giving feedback
     navigator.clipboard.writeText(location.origin + "/survey/" + hash).then(
       () => {
         console.log("Successfully copied to clipboard");
@@ -68,27 +73,35 @@ export function MySurveys() {
     }, 2500);
   };
 
+  // Handle editing
   const handleEdit = (survey) => {
+    // Sending request to DB
     dispatch(setEditedSurvey(survey));
 
+    // Redirecting user
     console.log("Redirecting...");
     navigate(`/new-survey`, { replace: true });
   };
 
+  // Handle answer checking
   const handleSeeAnswers = (id) => {
+    // Sending request to DB
     dispatch(setSurveyId(id));
 
+    // Redirecting user
     console.log("Redirecting to answers...");
     navigate(`/answers`, { replace: true });
   };
 
   const handleFillSurvey = (hash) => {
+    // Redirecting user
     navigate(`/survey/${hash}`, { replace: true });
   };
 
   return (
     <div>
       <h1>My surveys</h1>
+      {/* Feedback */}
       {message ? (
         message.type === "success" ? (
           <p className="mt-2 text-sm font-medium text-end text-green-500">
@@ -105,6 +118,7 @@ export function MySurveys() {
       {isLoading ? (
         <p className="text-center">Surveys loading...</p>
       ) : (
+        // Table of surveys
         <table className="w-full">
           <thead>
             <tr>
@@ -117,12 +131,15 @@ export function MySurveys() {
             {surveys.data.map((survey) => {
               return (
                 <tr key={survey.id}>
+                  {/* Survey name */}
                   <td
                     className="hover:cursor-pointer"
                     title="Fill survey"
                     onClick={() => handleFillSurvey(survey.hash)}>
                     {survey.name}
                   </td>
+
+                  {/* Created at */}
                   <td>
                     {new Date(survey.createdAt)
                       .toISOString()
@@ -130,6 +147,8 @@ export function MySurveys() {
                       .join(" ")
                       .substring(0, 19)}
                   </td>
+
+                  {/* Actions */}
                   <td className="flex flex-row justify-end">
                     <FontAwesomeIcon
                       icon={faComment}

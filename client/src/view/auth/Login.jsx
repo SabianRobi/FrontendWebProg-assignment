@@ -13,8 +13,11 @@ export const Login = () => {
   const dispatch = useDispatch();
   const { register } = useForm();
 
+  // Handle logging in
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    // Sending request to DB
     const email = document.querySelector("#email").value;
     const pw = document.querySelector("#password").value;
 
@@ -26,6 +29,7 @@ export const Login = () => {
 
     const response = await doLogin(cred);
 
+    // Giving feedback
     dispatch(
       setMessage(
         response["error"]
@@ -43,6 +47,7 @@ export const Login = () => {
       dispatch(setMessage(false));
     }, 2500);
     if (!response["error"]) {
+      // Save profile data into redux
       const data = response["data"];
       const userInfo = { accessToken: data.accessToken, user: data.user };
       dispatch(setCredentials(userInfo));
@@ -54,6 +59,7 @@ export const Login = () => {
       <h1 className="text-center my-6">Login</h1>
       <div className="max-w-sm mx-auto">
         <form className="mx-3 my-6" id="loginForm" onSubmit={handleLogin}>
+          {/* Feedback */}
           {message ? (
             message.type === "success" ? (
               <p className="mt-2 text-sm font-medium text-end text-green-500">
@@ -68,6 +74,7 @@ export const Login = () => {
             <></>
           )}
 
+          {/* Email field */}
           <div className="mb-6">
             <label
               htmlFor="email"
@@ -84,6 +91,8 @@ export const Login = () => {
               required
             />
           </div>
+
+          {/* Password field*/}
           <div className="mb-6">
             <label
               htmlFor="password"
@@ -100,6 +109,8 @@ export const Login = () => {
               required
             />
           </div>
+
+          {/* Login button */}
           <div className="mt-6 flex items-center justify-end gap-x-6">
             <button
               type="submit"

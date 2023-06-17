@@ -215,9 +215,10 @@ Az egész projektet tömörítsd be, kliensestül, szerverestül, és azt tölts
 
 # My requirements
 
-[ ] Comment
+[X] Comment
 [ ] MySurveys is only showing 10 surveys
 [ ] Survey component gives a warning
+[ ] Answers component has error (use lazy instead)
 [X] Make EditedSurvey to use redux
 [X] errorMessage/suceesMessage to use redux
 [X] Fill database with surveys and answers

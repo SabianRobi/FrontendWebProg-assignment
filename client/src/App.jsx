@@ -28,7 +28,6 @@ function App() {
           <Route path="/survey" element={<Survey />}>
             <Route path=":hash" element={<Survey />} />
           </Route>
-          {/* Edit to: survey/hash */}
 
           <Route
             path="/new-survey"

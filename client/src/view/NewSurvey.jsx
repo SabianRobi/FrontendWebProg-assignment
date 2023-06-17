@@ -13,7 +13,6 @@ import {
 } from "../store/SurveySlice";
 
 export function NewSurvey() {
-  // console.log(editedSurvey);
   const [doCreateSurvey] = useCreateSurveyMutation();
   const [doModifySurvey] = useModifySurveyMutation();
   const dispatch = useDispatch();
@@ -23,6 +22,7 @@ export function NewSurvey() {
   const { handleSubmit, register, reset } = useForm();
   let initialTextBoxText = "";
 
+  // Handle creating and modifying a survey
   const handleCreate = async (data) => {
     let error = false;
     console.log("Data beeing processed: ", data);
@@ -30,9 +30,9 @@ export function NewSurvey() {
 
     // Count and check pages
     const pages = data["newSurvey"].split("\n\n");
-    // console.log("pages", pages);
 
     if (pages.length <= 1) {
+      // Giving feedback when no page is present
       dispatch(
         setMessage({
           type: "error",
@@ -54,8 +54,8 @@ export function NewSurvey() {
       let qArr = [];
 
       let questions = page.split("\n");
-      // console.log("questions", questions);
       if (questions.length < 2) {
+        // Giving feedback when page has no question
         dispatch(
           setMessage({
             type: "error",
@@ -71,8 +71,8 @@ export function NewSurvey() {
       }
 
       questions.slice(1).forEach((question) => {
-        // console.log("question", question);
         if (question.trim().length === 0) {
+          // Giving feedback when question is empty
           dispatch(
             setMessage({
               type: "error",
@@ -99,6 +99,7 @@ export function NewSurvey() {
 
     survey = { ...survey, content: JSON.stringify(survey.content) };
 
+    // Sending request to DB
     let response;
     if (editedSurvey) {
       response = await doModifySurvey({ survey: survey, id: editedSurvey.id });
@@ -106,6 +107,7 @@ export function NewSurvey() {
       response = await doCreateSurvey(survey);
     }
 
+    // Giving feedback
     dispatch(
       setMessage(
         response["error"]
@@ -126,16 +128,19 @@ export function NewSurvey() {
     }, 2500);
 
     if (!response["error"]) {
+      // Resting form
       dispatch(setEditedSurvey(false));
       reset();
     }
   };
 
   const handleCancel = () => {
+    // Reseting form
     dispatch(setEditedSurvey(false));
     reset();
   };
 
+  // Setting the survey data when editing one
   if (editedSurvey) {
     const pages = JSON.parse(editedSurvey.content);
     const title = editedSurvey.name;
@@ -154,6 +159,7 @@ export function NewSurvey() {
 
   return (
     <div>
+      {/* Title */}
       <h1>
         {editedSurvey
           ? `Modifying survey: ${editedSurvey.name}`
@@ -201,6 +207,7 @@ export function NewSurvey() {
 
         {/* Buttons */}
         <div className="mt-6 flex items-center justify-end gap-x-3">
+          {/* Cancel */}
           {editedSurvey && (
             <button
               type="button"
@@ -209,6 +216,7 @@ export function NewSurvey() {
               Cancel
             </button>
           )}
+          {/* Create / Modify */}
           <button
             type="submit"
             className="rounded-md bg-green-800 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">

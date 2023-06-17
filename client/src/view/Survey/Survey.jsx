@@ -13,6 +13,7 @@ export function Survey() {
     return <Navigate to="/" replace />;
   }
 
+  // Returns the survey only when loaded
   if (!isLoading) {
     const survey = {
       ...surveyFetchedData.data[0],
@@ -20,7 +21,7 @@ export function Survey() {
     };
     delete survey.content;
 
-    dispatch(setSurvey(survey)); // TODO Warning-ot dob :(
+    dispatch(setSurvey(survey));
   }
 
   return isLoading ? (

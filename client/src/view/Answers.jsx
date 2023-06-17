@@ -14,7 +14,7 @@ export const Answers = () => {
   const questions = [];
 
   if (!isLoading) {
-    // Checking if there is an answers
+    // Checking if there is any answers
     if (answersData.data.length == 0) {
       noAnswers = true;
     } else {
